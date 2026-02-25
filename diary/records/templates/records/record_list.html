@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% for record in page_obj %}
+    <a href="{% url 'record' record.slug %}">{{ record.title }}</a>
+    <p>{{ record.content|truncatewords:20 }}</p>
+    {% for tag in record.tags.all %}
+        <h4>#{{ tag.name }}</h4>
+    {% endfor %}
+{% empty %}
+    <p>Записей пока нет.</p>
+{% endfor %}
+<div>
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+    {% endif %}
+
+    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+    {% endif %}
+</div>
+{% endblock %}

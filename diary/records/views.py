@@ -23,7 +23,7 @@ def record_list(request): #main page
         'search_query': query,
     }
 
-    return render(request, 'records/record.html', context)
+    return render(request, 'records/record_list.html', context)
 
 @login_required
 def show_record(request, slug): # show one page
@@ -33,7 +33,7 @@ def show_record(request, slug): # show one page
         user=request.user
     )
 
-    return render(request, 'records/show_record.html', {'record': record})
+    return render(request, 'records/record.html', {'record': record})
 
 @login_required
 def add_record(request):
@@ -47,7 +47,7 @@ def add_record(request):
             content=content,
         )
 
-        return redirect('record_list')
+        return redirect('records/record_list')
 
     return render(request, 'records/add_record.html')
 
