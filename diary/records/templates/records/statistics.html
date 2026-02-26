@@ -1,10 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<h2>Статистика</h2>
+
+<h3>Всего записей: {{ total_records }}</h3>
+<h3>Всего слов: {{ total_words }}</h3>
+<h3>Среднее количество слов: {{ average_words }}</h3>
+
+
+<hr>
+
+<canvas id="wordsChart" width="600" height="100"></canvas>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{{ titles|json_script:"titles-data" }}
+{{ words|json_script:"words-data" }}
+
+<script>
+    const titles = JSON.parse(document.getElementById('titles-data').textContent);
+    const wordCounts = JSON.parse(document.getElementById('words-data').textContent);
+
+    const ctx = document.getElementById('wordsChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: titles,
+            datasets: [{
+                label: 'Количество слов',
+                data: wordCounts,
+            }]
+        },
+    });
+</script>
+
+{% endblock %}

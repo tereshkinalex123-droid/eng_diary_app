@@ -6,6 +6,8 @@
     <p>{{ record.content|truncatewords:20 }}</p>
     {% for tag in record.tags.all %}
         <h4>#{{ tag.name }}</h4>
+    {% empty %}
+        <p>Тегов нет</p>
     {% endfor %}
 {% empty %}
     <p>Записей пока нет.</p>

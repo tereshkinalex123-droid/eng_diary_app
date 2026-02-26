@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{record.title}}
+{% endblock %}
+
+{% block content %}
+
+<article>
+
+    <h2>{{ record.title }}</h2>
+
+    <p><small>Создано {{ record.date }}</small></p>
+
+    <hr>
+
+    <div>  {{ record.content|linebreaks }}</div>
+
+    <hr>
+
+    <p><strong>Слов:</strong>{{ record.word_count }}</p>
+
+    <p>
+        {% for tag in record.tags.all %}
+            <p>#{{ tag }} </p>
+        {% empty %}
+            <em>Нет тегов</em>
+        {% endfor %}
+    </p>
+
+    <br>
+
+    <form action="{% url 'delete_record' record.slug %}"
+      method="post"
+      style="display:inline;"
+      onsubmit="return confirm('Вы уверены, что хотите удалить запись?');">
+    {% csrf_token %}
+    <button type="submit">🗑 Удалить</button>
+    </form>
+
+    <a href="{% url 'edit_record' record.slug %}">Редактировать</a>
+    <a href="{% url 'record_list' %}">Назад к списку</a>
+
+
+</article>
+
+{% endblock %}

@@ -1,10 +1,86 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+
+    <div>
+        {{ form.title.label_tag }}
+        {{ form.title }}
+    </div>
+
+    <br>
+    <br>
+    <div>
+        {{ form.content.label_tag }}
+        {{ form.content }}
+        <small>Слов: <span id="wordCount">0</span></small>
+    </div>
+
+    <br>
+
+    <input type="text" id="new-tag-input" placeholder="Новый тег">
+    <button type="button" onclick="addTag()">+</button>
+
+    <div id="tags-container">
+        {{ form.tags }}
+    </div>
+
+    <br>
+
+    <button type="submit">Сохранить изменения</button>
+</form>
+
+<script>
+    const textarea = document.getElementById("id_content");
+    const wordCounter = document.getElementById("wordCount");
+
+    function countWords() {
+        const text = textarea.value.trim();
+        const words = text ? text.split(/\s+/).length : 0;
+        wordCounter.textContent = words;
+    }
+
+    // считаем сразу при загрузке
+    countWords();
+
+    // и при вводе
+    textarea.addEventListener("input", countWords);
+</script>
+
+<script>
+function addTag() {
+    const input = document.getElementById("new-tag-input");
+    const name = input.value.trim();
+
+    if (!name) return;
+
+    fetch("{% url 'create_tag' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}"
+        },
+        body: "name=" + encodeURIComponent(name)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.error) return;
+
+        const container = document.getElementById("tags-container");
+
+        const label = document.createElement("label");
+        label.style.display = "block";
+
+        label.innerHTML = `
+            <input type="checkbox" name="tags" value="${data.id}" checked>
+            ${data.name}
+        `;
+
+        container.appendChild(label);
+        input.value = "";
+    });
+}
+</script>
+
+{% endblock %}
