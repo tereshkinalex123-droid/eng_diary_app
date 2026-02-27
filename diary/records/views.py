@@ -59,7 +59,7 @@ def add_record(request):
             return redirect('record_list')
     else:
         form = RecordForm()
-    return render(request, 'records/add_record.html', {'form': form})
+    return render(request, 'records/add_record.html', {'form': form, 'all_tags': Tag.objects.all()})
 
 @login_required
 def edit_record(request, slug):
@@ -87,7 +87,7 @@ def edit_record(request, slug):
     else:
         form = RecordForm(instance=record)
 
-    return render(request, 'records/edit_record.html', {'form': form, 'record': record})
+    return render(request, 'records/edit_record.html', {'form': form, 'record': record, 'all_tags': Tag.objects.all()})
 
 @login_required
 def delete_record(request, slug):
@@ -126,12 +126,35 @@ def show_statistics(request):
 @require_POST
 @login_required
 def create_tag(request):
-    name = request.POST.get('name', "").strip()
+    name = request.POST.get('name', "").strip().lower()
 
     if not name:
         return JsonResponse({'error': 'Empty name'}, status=400)
 
-    tag, created = Tag.objects.get_ot_create(name=name.lower())
+    tag, created = Tag.objects.get_or_create(name=name)
+
+    return JsonResponse({
+        "id": tag.id,
+        "name": tag.name
+    })
+
+@require_POST
+@login_required
+def attach_tag(request):
+    record_id = request.POST.get('record_id')
+    tag_id = request.POST.get('tag_id')
+
+    record = get_object_or_404(
+        Record,
+        id=record_id,
+        user=request.user
+    )
+    tag = get_object_or_404(
+        Tag,
+        id=tag_id
+    )
+
+    record.tags.add(tag)
 
     return JsonResponse({
         "id": tag.id,

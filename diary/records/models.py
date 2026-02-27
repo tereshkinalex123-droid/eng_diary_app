@@ -22,7 +22,7 @@ class Record(models.Model):
     slug = models.SlugField(max_length=100, unique = True, blank=True) #слаг
     content = models.TextField() #мессэдж
     date = models.DateTimeField(auto_now_add = True) #дата создания
-    tags = models.ManyToManyField(Tag, blank=True, related_name='records')
+    tags = models.ManyToManyField(Tag, blank=True)
 
     def word_count(self):
         return len(self.content.split())

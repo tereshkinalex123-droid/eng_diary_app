@@ -19,11 +19,35 @@
 
     <br>
 
+<div id="tags-container">
+    {% for tag in record.tags.all %}
+        <label style="display:block;">
+            <input type="checkbox" name="tags" value="{{ tag.id }}" checked>
+            {{ tag.name }}
+        </label>
+    {% endfor %}
+</div>
+
+    <button type="button" onclick="toggleTagPanel()">+ Добавить тег</button>
+
+    <div id="tag-panel" style="display:none;">
+
+    <select id="existing-tags">
+        {% for tag in all_tags %}
+            <option value="{{ tag.id }}">
+                {{ tag.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="button" onclick="addExistingTag()">Добавить</button>
+
+    <br>
+
     <input type="text" id="new-tag-input" placeholder="Новый тег">
     <button type="button" onclick="addTag()">+</button>
 
-    <div id="tags-container">
-        {{ form.tags }}
+    <hr>
     </div>
 
     <br>
@@ -80,6 +104,32 @@ function addTag() {
         container.appendChild(label);
         input.value = "";
     });
+}
+
+function toggleTagPanel() {
+    const panel = document.getElementById("tag-panel");
+    panel.style.display =
+        panel.style.display === "none" ? "block" : "none";
+}
+
+function addExistingTag() {
+    const select = document.getElementById("existing-tags");
+    const tagId = select.value;
+    const tagName = select.options[select.selectedIndex].text;
+
+    const container = document.getElementById("tags-container");
+
+    // если уже добавлен — не добавляем
+    if (document.querySelector(`input[value="${tagId}"]`)) return;
+
+    const label = document.createElement("label");
+    label.style.display = "block";
+    label.innerHTML = `
+        <input type="checkbox" name="tags" value="${tagId}" checked>
+        ${tagName}
+    `;
+
+    container.appendChild(label);
 }
 </script>
 
