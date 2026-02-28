@@ -25,6 +25,8 @@
 
     <button type="submit">Найти</button>
 
+    <a href="{% url 'record_list' %}"><button type="button">Очистить</button></a>
+
 </form>
 {% for record in page_obj %}
     <a href="{% url 'record' record.slug %}">{{ record.title }}</a>

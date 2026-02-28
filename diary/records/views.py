@@ -20,7 +20,7 @@ def record_list(request): #main page
 
     if query:
         records = records.filter(
-            Q(title__icontains=query),
+            Q(title__icontains=query) |
             Q(content__icontains=query)
         )
 
