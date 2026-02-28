@@ -1,6 +1,31 @@
 {% extends "base.html" %}
 
 {% block content %}
+<form method="get">
+
+    <input
+        type="text"
+        name="search"
+        placeholder="Поиск..."
+        value="{{ search_query|default:'' }}"
+    >
+
+    <select name="tag">
+        <option value="">Все теги</option>
+        {% for tag in all_tags %}
+            <option value="{{ tag.id }}"
+                {% if selected_tag == tag.id|stringformat:"s" %}
+                    selected
+                {% endif %}
+            >
+                {{ tag.name }}
+            </option>
+        {% endfor %}
+    </select>
+
+    <button type="submit">Найти</button>
+
+</form>
 {% for record in page_obj %}
     <a href="{% url 'record' record.slug %}">{{ record.title }}</a>
     <p>{{ record.content|truncatewords:20 }}</p>
@@ -14,13 +39,13 @@
 {% endfor %}
 <div>
     {% if page_obj.has_previous %}
-        <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+        <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&tag={{ selected_tag }}">
     {% endif %}
 
     Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
 
     {% if page_obj.has_next %}
-        <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+        <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&tag={{ selected_tag }}">
     {% endif %}
 </div>
 {% endblock %}

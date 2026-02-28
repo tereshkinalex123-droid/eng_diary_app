@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.db.models import Q
 
 
 @login_required #denies access to the page to an unlogged user
@@ -15,8 +16,18 @@ def record_list(request): #main page
     #Record.objects - Это менеджер модели. через него делаются все запросы к базе
 
     query = request.GET.get('search')
+    tag = request.GET.get('tag')
+
     if query:
-        records = records.filter(title__icontains=query) #ДОДЕЛАТЬ КАК БУДЕТ ИСКАТЬ ПО ТЕГУ ИЛИ ТАЙТЛУ
+        records = records.filter(
+            Q(title__icontains=query),
+            Q(content__icontains=query)
+        )
+
+    if tag:
+        records = records.filter(tags__id=tag)
+
+    records = records.distinct() #remove duplicates
 
     paginator = Paginator(records, 5) #pagination
     page_number = request.GET.get('page')
@@ -25,6 +36,8 @@ def record_list(request): #main page
     context = {
         'page_obj': page_obj,
         'search_query': query,
+        'selected_tag': tag,
+        'all_tags': Tag.objects.all(),
     }
 
     return render(request, 'records/record_list.html', context)

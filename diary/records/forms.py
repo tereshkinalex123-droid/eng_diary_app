@@ -1,6 +1,8 @@
 from django import forms
 from .models import Record
 
+
+
 class RecordForm(forms.ModelForm):
     new_tag = forms.CharField(
         required=False,
