@@ -1,11 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Deck
+from .models import Deck, Card
 from django.shortcuts import redirect
-
+from .forms import DeckForm, CardForm
 
 # ДОПИСАТЬ ВО ВСЕХ ШАБЛОНАХ ПУТЬ ДО ПАПКИ ПРИЛОЖЕНИЯ
-
 
 @login_required
 def deck_list(request):
@@ -29,7 +28,8 @@ def deck_create(request):
     return render(request, 'deck_create.html', {'form': form})
 
 @login_required
-def deck_detail(request,deck_slug):
+def deck_detail(request, deck_slug):
+
     deck = get_object_or_404(
         Deck,
         slug=deck_slug,
@@ -50,6 +50,12 @@ def deck_delete(request,deck_slug):
         deck.delete()
 
     return redirect('deck_list')
+
+@login_required
+def card_list(request):
+    cards = Card.objects.filter(user=request.user).order_by('-date')
+
+    return render(request, 'card_list.html', {'cards': cards})
 
 @login_required
 def card_create(request, deck_slug=None):
@@ -78,7 +84,7 @@ def card_create(request, deck_slug=None):
             if deck:
                 return redirect('deck_detail', deck_slug=deck.slug)
             else:
-                return redirect('deck_list')
+                return redirect('common_deck')
     else:
         form = CardForm()
 

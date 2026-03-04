@@ -1,5 +1,3 @@
-from html.parser import attrfind_tolerant
-
 from django import forms
 from .models import Card, Deck
 
