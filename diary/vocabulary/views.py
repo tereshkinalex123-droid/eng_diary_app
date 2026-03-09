@@ -1,14 +1,17 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Deck, Card
+from .models import Deck, Card, Review, ReviewSession
 from django.shortcuts import redirect
-from .forms import DeckForm, CardForm
+from .forms import DeckForm, CardForm, StartReviewForm
+
+from django.utils import timezone
+from algorithm import change_interval
 
 # ДОПИСАТЬ ВО ВСЕХ ШАБЛОНАХ ПУТЬ ДО ПАПКИ ПРИЛОЖЕНИЯ
-
+# -------- Deck Views --------
 @login_required
 def deck_list(request):
-    decks = Deck.objects.filter(user=request.user).order_by('-date')
+    decks = Deck.objects.filter(user=request.user).order_by('-created_at')
 
     return render(request, 'deck_list.html', {'decks': decks})
 
@@ -53,9 +56,11 @@ def deck_delete(request,deck_slug):
 
 @login_required
 def card_list(request):
-    cards = Card.objects.filter(user=request.user).order_by('-date')
+    cards = Card.objects.filter(user=request.user).order_by('-created_at')
 
     return render(request, 'card_list.html', {'cards': cards})
+
+# # -------- Card Views --------
 
 @login_required
 def card_create(request, deck_slug=None):
@@ -123,3 +128,29 @@ def card_delete(request, card_slug):
         card.delete()
 
     return redirect('deck_detail', deck_slug=deck.slug)
+
+@login_required
+def review(request, deck_slug=None):
+
+    deck = None
+
+    if deck_slug:
+        deck = get_object_or_404(
+            Deck,
+            slug=deck_slug,
+            user=request.user,
+        )
+
+    if request.method == "POST":
+        form = StartReviewForm(request.POST)
+
+        if form.is_valid():
+
+            cards_count = form.cleaned_data['cards_count']
+
+            return redirect('deck_list')
+
+    else:
+        form = StartReviewForm()
+
+    return render(request, 'review_start.html', {'form': form, 'deck': deck})

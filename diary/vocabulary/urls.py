@@ -16,6 +16,6 @@ urlpatterns = [
     path('cards/<slug:card_slug>/', views.card_edit, name='card_edit'),
     path('cards/<slug:card_slug>/delete/', views.card_delete, name='card_delete'),
 
-    path('review/', views.review, name='review_global'),
-    path('decks/<slug:deck_slug>/review/', views.review, name='review_deck'),
+    path('cards/review/', views.review, name='common_deck_review'),
+    path('decks/<slug:deck_slug>/review/', views.review, name='deck_review')
 ]
