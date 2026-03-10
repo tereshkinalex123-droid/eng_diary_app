@@ -12,15 +12,37 @@ def start_review_session(user, deck=None, limit=None):
 
     cards = cards.filter(review__next_review__lte=timezone.now())
 
-    cards = list(cards)
+    due_cards = list(cards)
+
+    if limit and len(due_cards) >= limit:
+        cards = due_cards[:limit]
+    else:
+        cards = due_cards
+
+        if limit:
+            remaining = limit - len(cards)
+
+            extra_cards = Card.objects.filter(user=user)
+
+            if deck:
+                extra_cards = extra_cards.filter(deck=deck)
+
+            extra_cards = extra_cards.exclude(
+                id__in=[c.id for c in cards]
+            )
+
+            extra_cards = list(extra_cards)
+
+            random.shuffle(extra_cards)
+
+            cards += extra_cards[:remaining]
+
 
     if not cards:
         return None
 
     random.shuffle(cards)
 
-    if limit:
-        cards = cards[:limit]
 
     session = ReviewSession.objects.create(
         user=user,
@@ -41,6 +63,8 @@ def start_review_session(user, deck=None, limit=None):
 
     ReviewSessionCard.objects.bulk_create(session_cards)
 
+    return session
+
 def get_next_card(session):
 
     session_card = session.session_cards.filter(answered=False).first()
@@ -48,5 +72,5 @@ def get_next_card(session):
     if not session_card:
         return None
 
-    return session_card.card
+    return session_card
 

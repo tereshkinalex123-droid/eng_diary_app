@@ -51,6 +51,7 @@ class Card(models.Model):
     back = models.CharField(max_length=50)
     examples = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    hint = models.TextField(blank=True)
 
     def __str__(self):
         return f"{self.user.name}: {self.front}"
@@ -65,6 +66,13 @@ class Card(models.Model):
         ]
 
     def save(self, *args, **kwargs):
+
+        if not self.hint and len(self.front) > 3:
+            hint = list(self.front)
+            for i in range(1, len(hint) - 1):
+                hint[i] = "_"
+            self.hint = "".join(hint)
+
         if not self.slug:
             base_slug = slugify(f"{self.front}")
             slug = base_slug

@@ -18,3 +18,17 @@ def answer_card(session_card, rating):
     session.save()
 
     update_review(review, rating)
+
+def finish_session(session):
+
+    session.completed = True
+    session.completed_at = timezone.now()
+    session.save()
+
+def get_session_stats(session):
+
+    return {
+        "total": session.total_cards,
+        "correct": session.correct_answers,
+        "incorrect": session.incorrect_answers
+    }
