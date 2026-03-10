@@ -1,0 +1,7 @@
+<h1>Повторение закончено</h1>
+
+<p>Всего карт: {{ session.total_cards }}</p>
+<p> Правильных ответов: {{ session.correct_answers }}</p>
+<p> Неправильных ответов: {{ session.incorrect_answers }}</p>
+
+<a href="{% url 'deck_list' %}">Назад к колодам</a>

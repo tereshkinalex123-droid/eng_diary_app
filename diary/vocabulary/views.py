@@ -3,9 +3,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Deck, Card, Review, ReviewSession
 from django.shortcuts import redirect
 from .forms import DeckForm, CardForm, StartReviewForm
-
 from django.utils import timezone
-from algorithm import change_interval
+from .services.session_service import get_next_card, start_review_session
+from .services.review_service import finish_session, get_session_stats, answer_card
 
 # ДОПИСАТЬ ВО ВСЕХ ШАБЛОНАХ ПУТЬ ДО ПАПКИ ПРИЛОЖЕНИЯ
 # -------- Deck Views --------
@@ -154,3 +154,38 @@ def review(request, deck_slug=None):
         form = StartReviewForm()
 
     return render(request, 'review_start.html', {'form': form, 'deck': deck})
+
+@login_required
+def review_session(request, session_id):
+    session = get_object_or_404(
+        ReviewSession,
+        id=session_id,
+        user=request.user,
+    )
+
+    session_card = get_next_card(session)
+
+    if not session_card:
+        finish_session(session)
+        return redirect('end_session', session_id=session_id)
+
+    if request.method == "POST":
+
+        rating = request.POST.get('rating')
+
+        answer_card(session_card, rating)
+
+        return redirect('review_session', session_id=session_id)
+
+    return render(request, 'review_card.html', {'session': session, 'session_card': session_card, 'card': session_card.card})
+
+@login_required
+def end_session(request, session_id):
+
+    session = get_object_or_404(
+        ReviewSession,
+        id=session_id,
+        user=request.user,
+    )
+
+    return render(request, 'end_session.html', {'session': session})

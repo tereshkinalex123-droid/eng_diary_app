@@ -1,0 +1,48 @@
+<h2>{{ card.front }}</h2>
+
+{% if card.hint %}
+
+<button id="show-hint">Show hint</button>
+
+<div id="hint" style="display:none">
+    <p>{{ card.hint }}</p>
+</div>
+
+{% endif %}
+
+<button id="show-answer">Show answer</button>
+
+<div id="answer-style" style="display:none">
+    <hr>
+
+    <p>{{ card.back }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button name="rating" value="again">Again</button>
+        <button name="rating" value="hard">Hard</button>
+        <button name="rating" value="good">Good</button>
+        <button name="rating" value="easy">Easy</button>
+
+    </form>
+</div>
+
+<script>
+    document.getElementById("show-answer").addEventListener("click", function(){
+    document getElementById("answer-style").style.display = "block"
+    this.style.display = "none"})
+</script>
+
+<script>
+    const hintBtn = document.getElementById("show-hint")
+
+    if (hintBtn) {
+
+        hintBtn.addEventListener("click", function() {
+
+            document.getElementById("hint").style.display = "block"
+            this.style.display = "none"
+        })
+    }
+</script>
