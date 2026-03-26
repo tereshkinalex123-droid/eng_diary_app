@@ -10,7 +10,7 @@ User = get_user_model()
 class Deck(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='decks')
     name = models.CharField(max_length=50)
-    slug = models.SlugField(max_length=50)
+    slug = models.SlugField(max_length=50, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -31,12 +31,13 @@ class Deck(models.Model):
         return f"{self.user.username}: {self.name}"
 
     def save(self, *args, **kwargs):
+
         if not self.slug:
-            base_slug = slugify(f"{self.front}")
+            base_slug = slugify(self.front)
             slug = base_slug
             counter = 1
 
-            while Card.objects.filter(slug=slug,user=self.user).exists():
+            while Deck.objects.filter(slug=slug,user=self.user).exists():
                 slug = f"{base_slug}-{counter}"
                 counter +=1
 
@@ -45,8 +46,8 @@ class Deck(models.Model):
 
 class Card(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cards')
-    deck = models.ForeignKey(Deck, null=True, blank=True, related_name='cards')
-    slug = models.SlugField(max_length=50, unique=True)
+    deck = models.ForeignKey(Deck, on_delete=models.SET_NULL, null=True, blank=True, related_name='cards')
+    slug = models.SlugField(max_length=50, null=True, blank=True)
     front = models.CharField(max_length=50)
     back = models.CharField(max_length=50)
     examples = models.TextField(blank=True)
@@ -54,7 +55,7 @@ class Card(models.Model):
     hint = models.TextField(blank=True)
 
     def __str__(self):
-        return f"{self.user.name}: {self.front}"
+        return f"{self.user.username}: {self.front}"
 
     class Meta:
         constraints = [
@@ -74,7 +75,7 @@ class Card(models.Model):
             self.hint = "".join(hint)
 
         if not self.slug:
-            base_slug = slugify(f"{self.front}")
+            base_slug = slugify(self.front)
             slug = base_slug
             counter = 1
 
