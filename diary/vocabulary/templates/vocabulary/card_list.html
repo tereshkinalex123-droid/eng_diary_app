@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{% url 'deck_list' %}" class="back">Back</a>
+
+<h1>All cards</h1>
+
+<a href="{% url 'card_create' %}" class="add-card-btn">
+    Add new card
+</a>
+
+
+
+<div class="cards-container">
+
+{% if !cards %}
+    <h3>No cards</h3>
+{% endif %}
+{% for card in cards %}
+
+<a href="{% url 'card_edit' card.slug %}" class="card-block">
+
+    <div class="card-front">
+        {{ card.front }}
+    </div>
+
+    <div class="card-back">
+        {{ card.back }}
+    </div>
+
+</a>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}

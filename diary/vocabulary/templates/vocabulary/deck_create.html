@@ -2,7 +2,7 @@
 
 {% block content %}
 
-<h2>Review</h2>
+<h2>New Deck</h2>
 
 <a href="javascript:history.back()">← Назад</a>
 
@@ -11,12 +11,12 @@
     {% csrf_token %}
 
     <div class="form-group">
-        {{ form.cards_count.label_tag }}
-        {{ form.cards_count.errors }}
-        {{ form.cards_count }}
+        {{ form.name.label_tag }}
+        {{ form.name.errors }}
+        {{ form.name }}
     </div>
 
-    <button type="submit">Start review</button>
+    <button type="submit">Create deck</button>
 
 </form>
 

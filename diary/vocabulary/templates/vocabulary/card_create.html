@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Create new card</h2>
+
+<a href="{% url 'common_deck' %}" class="back">Back to cards</a>
+
+<form method="post">
+
+    {% csrf_token %}
+
+    <div class="form-group">
+        {{ form.front.label_tag }}
+        {{ form.front.errors }}
+        {{ form.front }}
+    </div>
+
+    <div class="form-group">
+        {{ form.back.label_tag }}
+        {{ form.back.errors }}
+        {{ form.back }}
+    </div>
+
+    <div class="form-group">
+        {{ form.examples.label_tag }}
+        {{ form.examples.errors }}
+        {{ form.examples }}
+    </div>
+
+    <div class="form-group">
+        {{ form.deck.label_tag }}
+        {{ form.deck.errors }}
+        {{ form.deck }}
+    </div>
+
+    <button type="submit">Save card</button>
+
+</form>
+
+{% endblock %}

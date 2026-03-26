@@ -1,48 +1,72 @@
-<h2>{{ card.front }}</h2>
+{% load static %}
 
-{% if card.hint %}
+<h2>Card {{ session.correct_answers|add:session.incorrect_answers }} of {{ session.total_cards }}</h2>
 
-<button id="show-hint">Show hint</button>
+<form method="post" action="{% url 'end_session' session.id %}">
+    {% csrf_token %}
+    <button type="submit">Закончить</button>
+</form>
 
-<div id="hint" style="display:none">
-    <p>{{ card.hint }}</p>
-</div>
+<div class="card" id="card">
+    <div class="card-inner">
+        <div class="card-front">
 
-{% endif %}
+            <h2>{{ card.front }}</h2>
 
-<button id="show-answer">Show answer</button>
+            {% if card.hint %}
+            <button id="show-hint">Show hint</button>
 
-<div id="answer-style" style="display:none">
-    <hr>
+            <div id="hint" style="display:none">
+                <p>{{ card.hint }}</p>
+            </div>
+            {% endif %}
+        </div>
 
-    <p>{{ card.back }}</p>
-
-    <form method="post">
-        {% csrf_token %}
-
-        <button name="rating" value="again">Again</button>
-        <button name="rating" value="hard">Hard</button>
-        <button name="rating" value="good">Good</button>
-        <button name="rating" value="easy">Easy</button>
-
-    </form>
+        <div class="card-back">
+            <h2>{{ card.back }}</h2>
+            <div class="rating-buttons" id="rating-buttons" style="display:none">
+                <form method="post">
+                    {% csrf_token %}
+                    <button name="rating" value="again">Again</button>
+                    <button name="rating" value="hard">Hard</button>
+                    <button name="rating" value="good">Good</button>
+                    <button name="rating" value="easy">Easy</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
 <script>
-    document.getElementById("show-answer").addEventListener("click", function(){
-    document getElementById("answer-style").style.display = "block"
-    this.style.display = "none"})
-</script>
+const card = document.getElementById("card")
 
-<script>
-    const hintBtn = document.getElementById("show-hint")
+if (card) {
+    card.addEventListener("click", function() {
 
-    if (hintBtn) {
+        if (!this.classList.contains("flipped")) {
+            this.classList.add("flipped")
 
-        hintBtn.addEventListener("click", function() {
+            document.getElementById("rating-buttons").style.display = "block"
+        }
 
-            document.getElementById("hint").style.display = "block"
-            this.style.display = "none"
-        })
-    }
+    })
+}
+
+const hintBtn = document.getElementById("show-hint")
+
+if (hintBtn) {
+    hintBtn.addEventListener("click", function(e) {
+        e.stopPropagation()
+        document.getElementById("hint").style.display = "block"
+        this.style.display = "none"
+    })
+}
+
+const buttons = document.querySelectorAll(".rating-buttons button")
+
+buttons.forEach(btn => {
+    btn.addEventListener("click", function(e) {
+        e.stopPropagation()
+    })
+})
 </script>

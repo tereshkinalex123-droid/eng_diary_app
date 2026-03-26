@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="{% url 'deck_list'%}" class="back">Back</a>
+
+<h1>{{ deck.name }}</h1>
+
+<div>
+
+<a href="{% url 'card_create_in_deck' deck.slug %}">
+    Add card
+</a>
+
+<a href="{% url 'deck_review' deck.slug %}">
+    Review
+</a>
+
+<a href="{% url 'deck_delete' deck.slug %}">
+    Delete deck
+</a>
+
+</div>
+
+<hr>
+
+<h3>Cards</h3>
+
+{% if deck.cards %}
+
+<ul>
+
+{% for card in deck.cards %}
+
+<li>
+
+<a href="{% url 'card_edit' card.slug %}">
+    {{ card.front }}
+</a>
+
+</li>
+
+{% endfor %}
+
+</ul>
+
+{% else %}
+
+<p>No cards yet</p>
+
+{% endif %}
+
+{% endblock %}
