@@ -1,10 +1,10 @@
-{% extends "base.html" %}
+{% extends "base_vocabulary.html" %}
 
-{% block content %}
+{% block vocabulary_content %}
 
 <h2>Create new card</h2>
 
-<a href="{% url 'common_deck' %}" class="back">Back to cards</a>
+<a href="{% url 'vocabulary:common_deck' %}" class="back">Back to cards</a>
 
 <form method="post">
 

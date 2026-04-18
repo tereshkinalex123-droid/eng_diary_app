@@ -1,0 +1,41 @@
+{% extends "base_vocabulary.html" %}
+
+{% block vocabulary_content %}
+
+<h2>Your decks</h2>
+
+<div class="deck-container">
+
+    {% if not decks %}
+        <h3>No decks</h3>
+    {% endif %}
+
+    {% for deck in decks %}
+
+    <a href="{% url 'vocabulary:deck_detail' deck.slug %}" class="deck-name">
+        {{ deck.name }}
+    </a>
+
+    <div class="deck-actions">
+        <form method="POST" action="{% url 'vocabulary:deck_review' deck.slug %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-review">Повторение</button>
+        </form>
+
+<!--        <a href="{% url 'vocabulary:deck_review' deck.slug %}">Review</a>-->
+
+        <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}" onsubmit="return confirm(&quot;Удалить колоду {{ deck.name|escapejs }}?&quot;)">
+            {% csrf_token %}
+            <button type="submit" class="btn-danger">Удалить</button>
+        </form>
+    </div>
+
+    <hr>
+
+    {% endfor %}
+
+</div>
+
+<a href="{% url 'vocabulary:common_deck_review' %}">Daily review</a>
+
+{% endblock %}

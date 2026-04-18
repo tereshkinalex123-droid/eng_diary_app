@@ -1,0 +1,12 @@
+<h1>Дневник</h1>
+
+<nav>
+    <a href="{% url 'records:add_record' %}">Добавить запись</a> |
+    <a href="{% url 'records:statistics' %}">Статистика</a> |
+    <a href="{% url 'records:record_list' %}">На главную</a> |
+</nav>
+
+<hr>
+
+{% block records_content %}
+{% endblock %}

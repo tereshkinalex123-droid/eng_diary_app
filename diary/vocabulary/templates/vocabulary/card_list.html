@@ -1,25 +1,25 @@
-{% extends "base.html" %}
+{% extends "base_vocabulary.html" %}
 
-{% block content %}
+{% block vocabulary_content %}
 
-<a href="{% url 'deck_list' %}" class="back">Back</a>
+<a href="{% url 'vocabulary:deck_list' %}" class="back">Back</a>
 
 <h1>All cards</h1>
 
-<a href="{% url 'card_create' %}" class="add-card-btn">
+<a href="{% url 'vocabulary:card_create' %}" class="add-card-btn">
     Add new card
 </a>
 
-
+<hr>
 
 <div class="cards-container">
 
-{% if !cards %}
+{% if not cards %}
     <h3>No cards</h3>
 {% endif %}
 {% for card in cards %}
 
-<a href="{% url 'card_edit' card.slug %}" class="card-block">
+<a href="{% url 'vocabulary:card_edit' card.slug %}" class="card-block">
 
     <div class="card-front">
         {{ card.front }}
@@ -28,6 +28,8 @@
     <div class="card-back">
         {{ card.back }}
     </div>
+
+    <hr>
 
 </a>
 

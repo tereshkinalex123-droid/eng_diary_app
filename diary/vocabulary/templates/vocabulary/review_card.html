@@ -1,8 +1,10 @@
-{% load static %}
+{% extends "base_vocabulary.html" %}
+
+{% block vocabulary_content %}
 
 <h2>Card {{ session.correct_answers|add:session.incorrect_answers }} of {{ session.total_cards }}</h2>
 
-<form method="post" action="{% url 'end_session' session.id %}">
+<form method="post" action="{% url 'vocabulary:end_session' session.id %}">
     {% csrf_token %}
     <button type="submit">Закончить</button>
 </form>
@@ -36,6 +38,8 @@
         </div>
     </div>
 </div>
+
+{% end block %}
 
 <script>
 const card = document.getElementById("card")
