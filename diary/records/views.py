@@ -69,7 +69,7 @@ def add_record(request):
                     name=new_tag_name.strip().lower()
                 )
                 record.tags.add(tag)
-            return redirect('record_list')
+            return redirect('records:record_list')
     else:
         form = RecordForm()
     return render(request, 'records/add_record.html', {'form': form, 'all_tags': Tag.objects.all()})
@@ -96,7 +96,7 @@ def edit_record(request, slug):
                 )
                 record.tags.add(tag)
 
-            return redirect('record', slug=record.slug)
+            return redirect('records:record', slug=record.slug)
     else:
         form = RecordForm(instance=record)
 
@@ -113,7 +113,7 @@ def delete_record(request, slug):
     if request.method == 'POST':
         record.delete()
 
-    return redirect('record_list')
+    return redirect('records:record_list')
 
 @login_required
 def show_statistics(request):

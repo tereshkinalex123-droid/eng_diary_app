@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_records.html" %}
 
-{% block content %}
+{% block records_content %}
 <form method="get">
 
     <input
@@ -25,11 +25,11 @@
 
     <button type="submit">Найти</button>
 
-    <a href="{% url 'record_list' %}"><button type="button">Очистить</button></a>
+    <a href="{% url 'records:record_list' %}"><button type="button">Очистить</button></a>
 
 </form>
 {% for record in page_obj %}
-    <a href="{% url 'record' record.slug %}">{{ record.title }}</a>
+    <a href="{% url 'records:record' record.slug %}">{{ record.title }}</a>
     <p>{{ record.content|truncatewords:20 }}</p>
     {% for tag in record.tags.all %}
         <h4>#{{ tag.name }}</h4>

@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends "base_records.html" %}
 
-{% block content %}
+{% block records_content %}
 
 <h2>Редактирование: {{ record.title }}</h2>
 
@@ -82,7 +82,7 @@ function addTag() {
 
     if (!name) return;
 
-    fetch("{% url 'create_tag' %}", {
+    fetch("{% url 'records:create_tag' %}", {
         method: "POST",
         headers: {
             "Content-Type": "application/x-www-form-urlencoded",
