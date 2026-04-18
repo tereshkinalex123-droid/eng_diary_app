@@ -33,8 +33,6 @@ def start_review_session(user, deck=None, limit=None):
 
             extra_cards = list(extra_cards)
 
-            random.shuffle(extra_cards)
-
             cards += extra_cards[:remaining]
 
 

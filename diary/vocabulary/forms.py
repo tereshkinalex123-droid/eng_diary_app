@@ -1,5 +1,5 @@
 from django import forms
-from .models import Card, Deck, ReviewSession, Review
+from .models import Card, Deck,ReviewSession
 
 class CardForm(forms.ModelForm):
     class Meta:
@@ -21,10 +21,13 @@ class CardForm(forms.ModelForm):
             'deck': forms.Select(attrs={'class': 'form-control'})
         }
 
-    def __init__(self, *args, user=None, **kwargs):
+    def __init__(self, *args, user=None, deck=None, **kwargs):
         super().__init__(*args, **kwargs)
         if user:
             self.fields['deck'].queryset = Deck.objects.filter(user=user)
+        if deck:
+            self.fields['deck'].initial = deck
+
 
 class DeckForm(forms.ModelForm):
     class Meta:
@@ -37,9 +40,15 @@ class DeckForm(forms.ModelForm):
             })}
 
 class StartReviewForm(forms.ModelForm):
-    cards_count = forms.IntegerField(
-        label='Количество карточек',
-        min_value=5,
-        max_value=20,
-        widget=forms.NumberInput(attrs={'class': 'form-control', 'type': 'number','placeholder': "Введите количество карт для повторения"})
-    )
+    class Meta:
+        model = ReviewSession
+        fields = ('total_cards',)
+        widgets = {
+            'total_cards': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'type': 'number',
+                'placeholder': "Введите количество карт для повторения",
+                'min': 5,
+                'max': 20
+            })
+        }

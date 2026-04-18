@@ -1,3 +1,5 @@
+from os import name
+
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -16,14 +18,14 @@ class Deck(models.Model):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                Lower('name'),
                 'user',
-                name='unique_deck_per_user',
+                Lower('name'),
+                name="unique_deck_per_user"
             ),
             models.UniqueConstraint(
                 'user',
                 'slug',
-                name='unique_deck_slug_per_user'
+                name="unique_deck_slug_per_user"
             )
         ]
 
@@ -31,17 +33,15 @@ class Deck(models.Model):
         return f"{self.user.username}: {self.name}"
 
     def save(self, *args, **kwargs):
-
-        if not self.slug:
-            base_slug = slugify(self.front)
-            slug = base_slug
+        if not self.pk:
+            original_name = self.name
+            base_name = original_name
             counter = 1
-
-            while Deck.objects.filter(slug=slug,user=self.user).exists():
-                slug = f"{base_slug}-{counter}"
+            while Deck.objects.filter(user=self.user, name__iexact=base_name).exists():
+                base_name = f"{original_name} {counter}"
                 counter +=1
-
-            self.slug = slug
+            self.name = base_name
+            self.slug = slugify(base_name)
         super().save(*args, **kwargs)
 
 class Card(models.Model):

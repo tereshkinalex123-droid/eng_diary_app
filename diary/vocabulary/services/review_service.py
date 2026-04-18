@@ -1,7 +1,10 @@
-from cards.models import Review
-from cards.services.sm2_algorithm import update_review
+from .sm2_algorithm import update_review
+from django.utils import timezone
 
 def answer_card(session_card, rating):
+
+    if session_card.answered:
+        return;
 
     session = session_card.session
     review = session_card.card.review

@@ -16,9 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home.html')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('records/', include('records.urls')),
-    # path('vocabulary/', include('vocabulary.urls'))
+    path('records/', include('records.urls'), name='records'),
+    path('vocabulary/', include('vocabulary.urls'), name='vocabulary'),
+    path('', home),
 ]
