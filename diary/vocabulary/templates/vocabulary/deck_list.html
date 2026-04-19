@@ -22,8 +22,6 @@
             <button type="submit" class="btn-review">Повторение</button>
         </form>
 
-<!--        <a href="{% url 'vocabulary:deck_review' deck.slug %}">Review</a>-->
-
         <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}" onsubmit="return confirm(&quot;Удалить колоду {{ deck.name|escapejs }}?&quot;)">
             {% csrf_token %}
             <button type="submit" class="btn-danger">Удалить</button>

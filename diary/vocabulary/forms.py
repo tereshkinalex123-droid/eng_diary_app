@@ -1,5 +1,5 @@
 from django import forms
-from .models import Card, Deck,ReviewSession
+from .models import Card, Deck
 
 class CardForm(forms.ModelForm):
     class Meta:
@@ -38,17 +38,3 @@ class DeckForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Введи название колоды',
             })}
-
-class StartReviewForm(forms.ModelForm):
-    class Meta:
-        model = ReviewSession
-        fields = ('total_cards',)
-        widgets = {
-            'total_cards': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'type': 'number',
-                'placeholder': "Введите количество карт для повторения",
-                'min': 5,
-                'max': 20
-            })
-        }

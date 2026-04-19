@@ -1,11 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Deck, Card, ReviewSession
+from .models import Deck, Card
 from django.shortcuts import redirect
-from .forms import DeckForm, CardForm, StartReviewForm
+from .forms import DeckForm
 from django.utils import timezone
-from .services.session_service import get_next_card
-from .services.review_service import finish_session, answer_card
 
 # ДОПИСАТЬ ВО ВСЕХ ШАБЛОНАХ ПУТЬ ДО ПАПКИ ПРИЛОЖЕНИЯ
 # -------- Deck Views --------
@@ -84,7 +82,6 @@ def card_create(request, deck_slug=None):
 
             if deck:
                 card.deck = deck
-                print(deck.name)
 
             card.save()
 
@@ -129,82 +126,10 @@ def card_delete(request, card_slug):
         user=request.user
     )
 
-    previous_url = request.META.get('HTTP_REFERER')
-
-    deck = card.deck
+    next = request.POST.get('next')
 
     if request.method == "POST":
         card.delete()
 
-    if previous_url:
-        return redirect(previous_url)
-    else:
-        return redirect('vocabulary:common_deck')
+    return redirect(next)
 
-@login_required
-def review(request, deck_slug=None):
-
-    deck = None
-
-    if deck_slug:
-        deck = get_object_or_404(
-            Deck,
-            slug=deck_slug,
-            user=request.user,
-        )
-
-    if request.method == "POST":
-        form = StartReviewForm(request.POST)
-
-        if form.is_valid():
-
-            total_cards = form.cleaned_data['total_cards']
-
-            return redirect('vocabulary:deck_list')
-    else:
-        form = StartReviewForm()
-
-
-    return render(request, 'vocabulary/review_start.html', {'form': form, 'deck': deck})
-
-@login_required
-def review_session(request, session_id):
-    session = get_object_or_404(
-        ReviewSession,
-        id=session_id,
-        user=request.user,
-    )
-
-    session_card = get_next_card(session)
-
-    if not session_card:
-        finish_session(session)
-        return redirect('vocabulary:end_session', session_id=session_id)
-
-    if request.method == "POST":
-
-        rating = request.POST.get('rating')
-
-        answer_card(session_card, rating)
-
-        return redirect('vocabulary:review_session', session_id=session_id)
-
-    return render(request, 'vocabulary/review_card.html', {'session': session, 'session_card': session_card, 'card': session_card.card})
-
-@login_required
-def end_session(request, session_id):
-
-    session = get_object_or_404(
-        ReviewSession,
-        id=session_id,
-        user=request.user,
-    )
-
-    if request.method == "POST":
-        finish_session(session)
-        return redirect('vocabulary:review_session', session_id=session.id)
-
-    if not session.completed:
-        return redirect('vocabulary:review_session', session_id=session.id)
-
-    return render(request, 'vocabulary/end_session.html', {'session': session})

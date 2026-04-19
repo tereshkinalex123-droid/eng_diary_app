@@ -87,22 +87,25 @@ class Card(models.Model):
         super().save(*args, **kwargs)
 
 
-class Review(models.Model):
-    card = models.OneToOneField(
+class CardProgress(models.Model):
+    card = models.ForeignKey(
         Card,
         on_delete=models.CASCADE,
-        related_name='review'
+        related_name='card_progress'
     )
 
-    interval = models.IntegerField(default=1)
-    repetitions = models.IntegerField(default=0)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='card_progresses'
+    )
+
     ease_factor = models.FloatField(default=2.5)
+    repetitions  = models.IntegerField(default=0)
+    interval  = models.PositiveIntegerField(default=0)
 
     next_review = models.DateTimeField(default=timezone.now)
-    last_review = models.DateTimeField(null=True, blank=True)
-
-    def __str__(self):
-        return f"Review for {self.card.front}"
+    last_review = models.DateTimeField(blank=True, null=True)
 
 class ReviewSession(models.Model):
     user = models.ForeignKey(
@@ -113,52 +116,14 @@ class ReviewSession(models.Model):
 
     deck = models.ForeignKey(
         Deck,
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
+        related_name='review_sessions',
         null=True,
         blank=True
     )
 
-    total_cards = models.IntegerField()
-    correct_answers = models.IntegerField(default=0)
-    incorrect_answers = models.IntegerField(default=0)
+    total_cards = models.PositiveIntegerField(default=0)
+    correct_answers  = models.IntegerField(default=0)
 
     created_at = models.DateTimeField(auto_now_add=True)
-    completed = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"ReviewSession({self.user.username})"
-
-class ReviewSessionCard(models.Model):
-
-    session = models.ForeignKey(
-        ReviewSession,
-        on_delete=models.CASCADE,
-        related_name='session_cards'
-    )
-
-    card = models.ForeignKey(
-        Card,
-        on_delete=models.CASCADE,
-    )
-
-    order = models.IntegerField()
-
-    answered = models.BooleanField(default=False)
-
-    RATING_CHOICES = [
-        ("again", "Again"),
-        ("hard", "Hard"),
-        ("good", "Good"),
-        ("easy", "Easy"),
-    ]
-
-    rating = models.CharField(
-        max_length=10,
-        choices=RATING_CHOICES,
-        blank=True,
-        null=True,
-    )
-
-    class Meta:
-        ordering = ['order']
-        unique_together = ('session', 'card')
+    ended_at = models.DateTimeField(null=True, blank=True)

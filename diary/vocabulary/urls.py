@@ -17,9 +17,4 @@ urlpatterns = [
 
     path('cards/<slug:card_slug>/', views.card_edit, name='card_edit'),
     path('cards/<slug:card_slug>/delete/', views.card_delete, name='card_delete'),
-
-    path('cards/review/', views.review, name='common_deck_review'),
-    path('decks/<slug:deck_slug>/review/', views.review, name='deck_review'),
-    path('review/session/<int:session_id>/end/',views.end_session,name='end_session'),
-    path('review/session/<int:session_id>/', views.review_session, name='review_session'),
 ]
