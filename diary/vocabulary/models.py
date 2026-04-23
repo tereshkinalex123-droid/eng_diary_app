@@ -1,10 +1,10 @@
-from os import name
-
+from datetime import timedelta
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth import get_user_model
 from django.db.models.functions import Lower
 from django.utils.text import slugify
+import math
 
 User = get_user_model()
 
@@ -106,6 +106,32 @@ class CardProgress(models.Model):
 
     next_review = models.DateTimeField(default=timezone.now)
     last_review = models.DateTimeField(blank=True, null=True)
+
+    def update_after_review(self, quality):
+        self.last_reviewed = timezone.now()
+
+        if quality < 3:
+            self.repetitions = 0
+            self.interval = 1
+        else:
+            self.repetitions += 1
+
+            if self.repetitions == 1:
+                self.interval = 1
+            elif self.repetitions == 2:
+                self.interval = 6
+            else:
+                self.interval = int(math.ceil(self.interval * self.ease_factor))
+
+            self.ease_factor = self.ease_factor + (0.1 - (5 - quality) * 0.08)
+
+            if self.ease_factor < 1.3:
+                self.ease_factor = 1.3
+
+
+        self.next_review = timezone.now() + timedelta(days=self.interval)
+
+        self.save()
 
 class ReviewSession(models.Model):
     user = models.ForeignKey(

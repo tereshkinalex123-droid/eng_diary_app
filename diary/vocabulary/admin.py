@@ -4,7 +4,6 @@ from .models import Deck, Card
 class CardInline(admin.TabularInline):
     model = Card
     extra = 0
-    readonly_fields = ('slug', 'front', 'back', 'created_at')
     can_delete = False
 
 @admin.register(Deck)
@@ -26,3 +25,12 @@ class DeckAdmin(admin.ModelAdmin):
     @admin.display(description='cards count')
     def count_cards(self, obj):
         return f"A deck contains {obj.cards.count()} cards"
+
+@admin.register(Card)
+class CardAdmin(admin.ModelAdmin):
+    list_display = ('user', 'front', 'slug', 'deck', 'created_at')
+    search_fields = ('front',)
+    search_help_text = "Search by card front"
+    list_filter = ('user', 'front', 'deck')
+    prepopulated_fields = {'slug': ('front',)}
+    readonly_fields = ('created_at',)

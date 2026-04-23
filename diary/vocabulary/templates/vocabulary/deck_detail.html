@@ -12,7 +12,7 @@
         {% csrf_token %}
         <button type="submit" class="btn-add-new-card">Добавить новую карту</button>
     </form>
-        <form method="POST" action="{% url 'vocabulary:deck_review' deck.slug %}">
+        <form method="POST" action="{% url 'vocabulary:review_card' deck.slug %}">
             {% csrf_token %}
             <button type="submit" class="btn-review">Повторение</button>
         </form>
