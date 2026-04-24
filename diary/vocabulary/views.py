@@ -165,7 +165,7 @@ def review_card(request, deck_slug=None):
         if deck_slug:
             return redirect('vocabulary:review_setup', deck_slug=deck_slug)
         else:
-            return redirect('vocabulary:common_review_card')
+            return redirect('vocabulary:common_review_setup')
 
     if request.method == "GET":
         if not card_ids:
@@ -189,6 +189,7 @@ def review_card(request, deck_slug=None):
             request.session['session_id'] = session.id
             card_ids = [card.id for card in cards]
             current_index = 0
+            session_id = session.id
 
         current_card_id = card_ids[current_index]
         card_progress = get_object_or_404(CardProgress, id=current_card_id, user=request.user)
@@ -196,12 +197,16 @@ def review_card(request, deck_slug=None):
         return render(request, 'vocabulary/review_card.html', {
             'card': card_progress.card,
             'current': current_index + 1,
-            'total': len(card_ids)
+            'total': len(card_ids),
+            'session_id': session_id
         })
 
     elif request.method == "POST":
         if not card_ids or not session_id:
-            return redirect('vocabulary:review_setup')
+            if deck:
+                return redirect('vocabulary:review_setup', deck_slug=deck_slug)
+            else:
+                return redirect('vocabulary:common_review_setup')
 
         quality = int(request.POST.get('quality', 0))
 
@@ -228,7 +233,10 @@ def review_card(request, deck_slug=None):
         request.session['current_index'] = current_index
 
         if current_index < len(card_ids):
-            return redirect('vocabulary:review_card')
+            if deck_slug:
+                return redirect('vocabulary:review_card', deck_slug=deck_slug)
+            else:
+                return redirect('vocabulary:common_review_card')
 
         session.ended_at = timezone.now()
         session.save()
@@ -243,3 +251,22 @@ def review_card(request, deck_slug=None):
 def session_results(request, session_id):
     session = ReviewSession.objects.get(id=session_id, user=request.user)
     return render(request, 'vocabulary/session_results.html', {'session':session, 'wrong_answers': session.total_cards - session.correct_answers })
+
+def end_review(request, session_id):
+    if request.method == "POST":
+        session = get_object_or_404(
+            ReviewSession,
+            id=session_id,
+            user=request.user
+        )
+
+        session.ended_at = timezone.now()
+        session.save()
+
+        request.session.pop('review_limit', None)
+        request.session.pop('card_ids', None)
+        request.session.pop('current_index', None)
+        request.session.pop('session_id', None)
+
+        return render(request, 'vocabulary/session_results.html',
+                      {'session': session, 'wrong_answers': session.total_cards - session.correct_answers})

@@ -34,6 +34,9 @@
 
 </div>
 
-<a href="{% url 'vocabulary:common_review_card' %}">Daily review</a>
+<form method="POST" action="{% url 'vocabulary:common_review_card' %}">
+    {% csrf_token %}
+    <button type="submit" class="btn-review">Повторение</button>
+</form>
 
 {% endblock %}

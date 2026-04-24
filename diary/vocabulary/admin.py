@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Deck, Card
+from .models import Deck, Card, CardProgress
 
 class CardInline(admin.TabularInline):
     model = Card
@@ -34,3 +34,9 @@ class CardAdmin(admin.ModelAdmin):
     list_filter = ('user', 'front', 'deck')
     prepopulated_fields = {'slug': ('front',)}
     readonly_fields = ('created_at',)
+
+@admin.register(CardProgress)
+class CardProgressAdmin(admin.ModelAdmin):
+    list_display = ('card', 'user', 'next_review', 'repetitions', 'interval')
+    list_filter = ('user', 'next_review')
+    search_fields = ('card__front', 'user__username')

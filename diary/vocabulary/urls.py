@@ -18,8 +18,10 @@ urlpatterns = [
     path('cards/<slug:card_slug>/', views.card_edit, name='card_edit'),
     path('cards/<slug:card_slug>/delete/', views.card_delete, name='card_delete'),
 
-    path('start_review', views.start_review_setup, name='review_setup'),
+    path('start_review/<slug:deck_slug>/', views.start_review_setup, name='review_setup'),
+    path('start_common_review/', views.start_review_setup, name='common_review_setup'),
+    path('end_review/<int:session_id>/', views.end_review, name='end_review'),
     path('cards/<slug:deck_slug>/review', views.review_card, name='review_card'),
     path('cards/common_review', views.review_card, name='common_review_card'),
-    path('cards/review/results', views.session_results, name='session_results'),
+    path('cards/review/<int:session_id>/results', views.session_results, name='session_results'),
 ]

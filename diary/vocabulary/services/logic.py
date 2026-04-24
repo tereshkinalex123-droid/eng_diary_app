@@ -31,6 +31,7 @@ def get_review_cards(user, limit, deck=None):
     add_cards_ids = [p.card.id for p in result]
 
     if remaining > 0:
+
         future_cards = CardProgress.objects.filter(user=user, repetitions__gt=0, next_review__gt=timezone.now())
 
         future_cards = future_cards.exclude(card_id__in=add_cards_ids)
@@ -43,3 +44,4 @@ def get_review_cards(user, limit, deck=None):
         result = list(chain(result, future_cards))
 
     return result
+
