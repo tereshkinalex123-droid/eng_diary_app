@@ -24,4 +24,6 @@ urlpatterns = [
     path('cards/<slug:deck_slug>/review', views.review_card, name='review_card'),
     path('cards/common_review', views.review_card, name='common_review_card'),
     path('cards/review/<int:session_id>/results', views.session_results, name='session_results'),
+    path('common_review/confirm/', views.confirm_review, name='confirm_common_review'),
+    path('review/<slug:deck_slug>/confirm/', views.confirm_review, name='confirm_review'),
 ]

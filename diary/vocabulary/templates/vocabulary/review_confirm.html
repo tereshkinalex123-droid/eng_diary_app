@@ -1,0 +1,18 @@
+{% extends "base_vocabulary.html" %}
+
+{% block vocabulary_content %}
+<h2>Недостаточно карточек</h2>
+
+<p>У вас только {{ cards_count }} карточек для повторения, а вы запросили {{ limit }}.</p>
+<p>Начать повторение с {{ cards_count }} карточками?</p>
+
+{% if deck_slug %}
+    <form method="post" action="{% url 'vocabulary:confirm_review' deck_slug=deck_slug %}">
+{% else %}
+    <form method="post" action="{% url 'vocabulary:confirm_common_review' %}">
+{% endif %}
+    {% csrf_token %}
+    <button type="submit" name="choice" value="yes">Да, начать</button>
+    <a href="{% url 'vocabulary:deck_list' %}">Нет, вернуться</a>
+</form>
+{% endblock %}

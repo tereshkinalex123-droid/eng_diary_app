@@ -177,6 +177,17 @@ def review_card(request, deck_slug=None):
             if not cards:
                 return render(request, 'vocabulary/review_done.html')
 
+
+            if len(cards) < review_limit and not request.session.get('confirmed'):
+                return render(request,
+                              'vocabulary/review_confirm.html',
+                              {'cards_count': len(cards),
+                               'limit': review_limit,
+                              'deck_slug':deck_slug})
+
+            if request.session.get('confirmed'):
+                request.session['confirmed'] = False
+
             request.session['card_ids'] = [card.id for card in cards]
             request.session['current_index'] = 0
 
@@ -270,3 +281,14 @@ def end_review(request, session_id):
 
         return render(request, 'vocabulary/session_results.html',
                       {'session': session, 'wrong_answers': session.total_cards - session.correct_answers})
+
+
+def confirm_review(request, deck_slug=None):
+    if request.method == "POST":
+        if request.POST.get('choice') == 'yes':
+            request.session['confirmed'] = True
+
+        if deck_slug:
+            return redirect('vocabulary:review_card', deck_slug=deck_slug)
+        else:
+            return redirect('vocabulary:common_review_card')
