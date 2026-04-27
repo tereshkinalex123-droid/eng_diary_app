@@ -15,7 +15,7 @@ urlpatterns = [
     path('cards/', views.card_list, name='common_deck'),
     path('decks/<slug:deck_slug>/cards/add/', views.card_create, name='card_create_in_deck'),
 
-    path('cards/<slug:card_slug>/', views.card_edit, name='card_edit'),
+    path('cards/<int:id>/', views.card_edit, name='card_edit'),
     path('cards/<slug:card_slug>/delete/', views.card_delete, name='card_delete'),
 
     path('start_review/<slug:deck_slug>/', views.start_review_setup, name='review_setup'),
