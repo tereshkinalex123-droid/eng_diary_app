@@ -17,7 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def home(request):
     return render(request, 'home.html')
 
@@ -25,5 +27,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('records/', include('records.urls'), name='records'),
     path('vocabulary/', include('vocabulary.urls'), name='vocabulary'),
-    path('', home),
+    path('accounts/', include('django.contrib.auth.urls')),  # ← добавить
+    path('accounts/', include('accounts.urls')),
+    path('', home, name='home'),
 ]

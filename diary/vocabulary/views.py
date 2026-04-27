@@ -4,7 +4,6 @@ from .models import Deck, Card, CardProgress, ReviewSession
 from django.shortcuts import redirect
 from .forms import DeckForm, CardForm, ReviewSessionForm
 from django.utils import timezone
-
 from .services.logic import get_review_cards
 
 @login_required
@@ -259,10 +258,12 @@ def review_card(request, deck_slug=None):
 
         return redirect('vocabulary:session_results', session_id=session.id)
 
+@login_required
 def session_results(request, session_id):
     session = ReviewSession.objects.get(id=session_id, user=request.user)
     return render(request, 'vocabulary/session_results.html', {'session':session, 'wrong_answers': session.total_cards - session.correct_answers })
 
+@login_required
 def end_review(request, session_id):
     if request.method == "POST":
         session = get_object_or_404(
@@ -282,7 +283,7 @@ def end_review(request, session_id):
         return render(request, 'vocabulary/session_results.html',
                       {'session': session, 'wrong_answers': session.total_cards - session.correct_answers})
 
-
+@login_required
 def confirm_review(request, deck_slug=None):
     if request.method == "POST":
         if request.POST.get('choice') == 'yes':
