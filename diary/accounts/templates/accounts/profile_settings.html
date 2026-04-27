@@ -1,0 +1,11 @@
+{% extends "base_registration.html" %}
+
+{% block registration_content %}
+<h1>Настройки</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+<a href="{% url 'accounts:profile' %}">Назад</a>
+{% endblock %}

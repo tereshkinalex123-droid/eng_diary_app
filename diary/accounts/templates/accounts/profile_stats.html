@@ -1,0 +1,8 @@
+{% extends "base_registration.html" %}
+
+{% block registration_content %}
+<h1>Статистика</h1>
+<p>Общее количество карточек: {{ user.cards.count }}</p>
+<p>Количество колод: {{ user.decks.count }}</p>
+<p><a href="{% url 'accounts:profile' %}">Назад</a></p>
+{% endblock %}
