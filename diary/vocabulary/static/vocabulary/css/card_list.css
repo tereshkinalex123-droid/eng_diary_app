@@ -1,0 +1,84 @@
+/* добавить в static/vocabulary/css/vocabulary.css */
+
+/* ===== ВСЕ КАРТОЧКИ ===== */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.page-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0c4a6e;
+    margin: 0;
+}
+
+.btn-add-card {
+    background: #10b981;
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-add-card:hover {
+    background: #059669;
+    transform: translateY(-2px);
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.card-card {
+    background: white;
+    border-radius: 20px;
+    padding: 1.2rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border: 1px solid #e2e8f0;
+    display: block;
+}
+
+.card-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    border-color: #38bdf8;
+}
+
+.card-front-side,
+.card-back-side {
+    margin: 0.5rem 0;
+}
+
+.card-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: #94a3b8;
+    font-weight: 600;
+}
+
+.card-text {
+    color: #1e293b;
+    font-weight: 500;
+    margin: 0.25rem 0 0 0;
+    word-break: break-word;
+}
+
+.card-divider {
+    height: 1px;
+    background: #e2e8f0;
+    margin: 0.75rem 0;
+}

@@ -1,12 +1,57 @@
 {% extends "base_registration.html" %}
+{% load static %}
 
 {% block registration_content %}
-<h1>Профиль</h1>
-<a href="/">To main page</a>
-<p><strong>Имя пользователя:</strong> {{ user.username }}</p>
-<p><strong>Email:</strong> {{ user.email|default:"не указан" }}</p>
-<p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d.m.Y" }}</p>
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+</head>
+<body>
+<div class="profile-container">
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <span class="avatar-text">{{ user.username|make_list|first|upper }}</span>
+            </div>
+            <h1 class="profile-name">{{ user.username }}</h1>
+            <p class="profile-joined">с {{ user.date_joined|date:"d.m.Y" }}</p>
+        </div>
 
-<a href="{% url 'accounts:profile_settings' %}">Настройки</a> |
-<a href="{% url 'accounts:profile_stats' %}">Статистика</a>
+        <div class="profile-info">
+            <div class="info-row">
+                <span class="info-label">📧 Email</span>
+                <span class="info-value">{{ user.email|default:"не указан" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">📅 Дата регистрации</span>
+                <span class="info-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+
+        <div class="streak-section">
+            <div class="streak-card">
+                <div class="streak-icon">🔥</div>
+                <div class="streak-value">{{ streak.current_streak }}</div>
+                <div class="streak-label">текущий стрик</div>
+            </div>
+            <div class="streak-card">
+                <div class="streak-icon">🏆</div>
+                <div class="streak-value">{{ streak.max_streak }}</div>
+                <div class="streak-label">максимальный стрик</div>
+            </div>
+        </div>
+
+        <div class="profile-actions">
+            <a href="{% url 'accounts:profile_settings' %}" class="btn-action btn-settings">⚙️ Настройки</a>
+            <a href="{% url 'accounts:profile_stats' %}" class="btn-action btn-stats">📊 Статистика</a>
+        </div>
+
+        <div class="profile-footer">
+            <a href="/" class="back-link">← На главную</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}

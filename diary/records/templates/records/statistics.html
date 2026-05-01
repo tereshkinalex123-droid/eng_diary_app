@@ -1,17 +1,40 @@
 {% extends "base_records.html" %}
+{% load static %}
 
 {% block records_content %}
-<h2>Статистика</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'records/css/statistics.css' %}">
+</head>
+<body>
+<div class="notebook-container">
+    <div class="stats-header">
+        <h1 class="stats-title">📊 Статистика дневника</h1>
+    </div>
 
-<h3>Всего записей: {{ total_records }}</h3>
-<h3>Всего слов: {{ total_words }}</h3>
-<h3>Среднее количество слов: {{ average_words }}</h3>
+    <div class="stats-cards">
+        <div class="stat-card">
+            <div class="stat-value">{{ total_records }}</div>
+            <div class="stat-label">Всего записей</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ total_words }}</div>
+            <div class="stat-label">Всего слов</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value">{{ average_words }}</div>
+            <div class="stat-label">Среднее слов</div>
+        </div>
+    </div>
 
-
-<hr>
-
-<canvas id="wordsChart" width="600" height="100"></canvas>
-
+    <div class="chart-container">
+        <h3 class="chart-title">📈 Динамика слов по записям</h3>
+        <canvas id="wordsChart" width="600" height="100"></canvas>
+    </div>
+</div>
+</body>
+</html>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 {{ titles|json_script:"titles-data" }}
@@ -30,9 +53,20 @@
             datasets: [{
                 label: 'Количество слов',
                 data: wordCounts,
+                backgroundColor: 'rgba(139, 92, 246, 0.6)',
+                borderColor: '#8b5cf6',
+                borderWidth: 1
             }]
         },
+        options: {
+            responsive: true,
+            maintainAspectRatio: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                }
+            }
+        }
     });
 </script>
-
 {% endblock %}

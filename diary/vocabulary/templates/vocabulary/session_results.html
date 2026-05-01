@@ -1,13 +1,45 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_results.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <div class="results-card">
+        <div class="results-header">
+            <div class="results-icon">🎉</div>
+            <h1 class="results-title">Повторение завершено!</h1>
+        </div>
 
-<p>Review is completed</p>
+        <div class="results-stats">
+            <div class="stat-item">
+                <div class="stat-value">{{ session.total_cards }}</div>
+                <div class="stat-label">всего карточек</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ session.correct_answers }}</div>
+                <div class="stat-label">правильных ответов</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">{{ wrong_answers }}</div>
+                <div class="stat-label">ошибок</div>
+            </div>
+        </div>
 
-<p>{{ session.total_cards }} cards were repeated</p>
-<p>{{ session.correct_answers }} cards were repeated correctly</p>
-<p>{{ wrong_answers }} cards were wrong</p>
+        <div class="results-accuracy">
+            <div class="accuracy-bar">
+                <div class="accuracy-fill" style="width: {% widthratio session.correct_answers session.total_cards 100 %}%"></div>
+            </div>
+            <p class="accuracy-text">Точность: {% widthratio session.correct_answers session.total_cards 100 %}%</p>
+        </div>
 
-<a href="{% url 'vocabulary:deck_list' %}" class="back">Back to decks</a>
-
+        <a href="{% url 'vocabulary:deck_list' %}" class="btn-results-back">← Вернуться к колодам</a>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}

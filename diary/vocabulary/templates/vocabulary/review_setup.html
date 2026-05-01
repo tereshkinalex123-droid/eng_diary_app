@@ -1,23 +1,36 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_setup.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <a href="javascript:history.back()" class="back-link">← Назад</a>
 
-<h2>New Review</h2>
-
-<a href="javascript:history.back()">← Назад</a>
-
-<form method="post">
-
-    {% csrf_token %}
-
-    <div class="form-group">
-        {{ form.card_limit.label_tag }}
-        {{ form.card_limit.errors }}
-        {{ form.card_limit }}
+    <div class="form-header">
+        <h1 class="form-title">🔄 Новое повторение</h1>
     </div>
 
-    <button type="submit">Start review</button>
+    <form method="post" class="review-form">
+        {% csrf_token %}
 
-</form>
+        <div class="form-group">
+            <label for="{{ form.card_limit.id_for_label }}" class="form-label">{{ form.card_limit.label_tag }}</label>
+            {{ form.card_limit.errors }}
+            {{ form.card_limit }}
+            <div class="form-hint">Выберите количество карточек для повторения (5–20)</div>
+        </div>
 
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">▶ Начать повторение</button>
+            <a href="javascript:history.back()" class="btn-cancel">❌ Отмена</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
 {% endblock %}

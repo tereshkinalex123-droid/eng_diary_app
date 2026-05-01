@@ -1,0 +1,57 @@
+/* добавить в notebook.css */
+
+/* ===== СТАТИСТИКА ===== */
+.stats-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.stats-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #4a3728;
+}
+
+.stats-cards {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: white;
+    padding: 1.5rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    min-width: 150px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #facc15;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #8b5cf6;
+}
+
+.stat-label {
+    color: #78716c;
+    font-weight: 500;
+    margin-top: 0.5rem;
+}
+
+.chart-container {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    margin-top: 1rem;
+}
+
+.chart-title {
+    text-align: center;
+    color: #4a3728;
+    margin-bottom: 1.5rem;
+}

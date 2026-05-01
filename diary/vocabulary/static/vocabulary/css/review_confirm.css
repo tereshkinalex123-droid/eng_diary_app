@@ -1,0 +1,76 @@
+/* добавить в static/vocabulary/css/vocabulary.css */
+
+/* ===== СТРАНИЦА ПРЕДУПРЕЖДЕНИЯ ===== */
+.warning-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.warning-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #f59e0b;
+}
+
+.warning-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 24px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.warning-text {
+    font-size: 1.1rem;
+    color: #1e293b;
+    margin-bottom: 1rem;
+}
+
+.warning-text strong {
+    color: #f59e0b;
+}
+
+.warning-question {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #0c4a6e;
+    margin-bottom: 1.5rem;
+}
+
+.warning-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn-warning-yes {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-warning-yes:hover {
+    background: #059669;
+    transform: scale(1.02);
+}
+
+.btn-warning-no {
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-warning-no:hover {
+    background: #dc2626;
+}

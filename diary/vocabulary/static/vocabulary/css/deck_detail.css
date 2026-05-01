@@ -1,0 +1,135 @@
+/* добавить в static/vocabulary/css/vocabulary.css */
+
+/* ===== ДЕТАЛЬНАЯ СТРАНИЦА КОЛОДЫ ===== */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    background: #0284c7;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    background: #0369a1;
+    transform: translateX(-4px);
+}
+
+.deck-header {
+    margin-bottom: 1.5rem;
+}
+
+.deck-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #0c4a6e;
+}
+
+.deck-actions-bar {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.add-card:hover {
+    background: #059669;
+    transform: scale(1.02);
+}
+
+.review {
+    background: #0369a1;
+}
+
+.review:hover {
+    background: #024c74;
+    transform: scale(1.02);
+}
+
+.delete {
+    background: #f02414;
+}
+
+.delete:hover {
+    background: #ff3f2f;
+    transform: scale(1.02);
+}
+
+.inline-form {
+    display: inline;
+}
+
+.divider {
+    height: 2px;
+    background: linear-gradient(90deg, #38bdf8, #0284c7);
+    margin: 1.5rem 0;
+    border-radius: 2px;
+}
+
+.cards-section {
+    margin-top: 1rem;
+}
+
+.section-title {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #0c4a6e;
+    margin-bottom: 1rem;
+}
+
+.cards-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card-item {
+    background: white;
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid #e2e8f0;
+}
+
+.card-item:hover {
+    background: #f0f9ff;
+    transform: translateX(4px);
+    border-color: #38bdf8;
+}
+
+.card-front {
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.card-arrow {
+    color: #94a3b8;
+    font-size: 1.2rem;
+}
+
+.empty-cards {
+    background: white;
+    padding: 2rem;
+    border-radius: 16px;
+    text-align: center;
+    color: #6b7280;
+}
+

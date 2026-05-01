@@ -1,13 +1,25 @@
-<h1>REVIEWS</h1>
+{% load static %}
 
-<a href="/">To main page</a>
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/base_vocabulary.css' %}">
+</head>
+<body class="vocabulary-page">
+<h1 class="page-title">📚 VOCABULARY</h1>
 
-<nav>
-    <a href="{% url 'vocabulary:common_deck' %}" class="common_deck">Common deck</a>
-    <a href="{% url 'vocabulary:deck_create' %}" class="create_deck">Create new Deck</a>
+<a href="/" class="back-link">← To main page</a>
+
+<nav class="vocabulary-nav">
+    <a href="{% url 'vocabulary:common_deck' %}" class="nav-link">🗂️ Common deck</a>
+    <a href="{% url 'vocabulary:deck_create' %}" class="nav-link">➕ Create new Deck</a>
 </nav>
 
-<hr>
+<hr class="separator">
 
-{% block vocabulary_content %}
-{% endblock %}
+<main class="vocabulary-content">
+    {% block vocabulary_content %}
+    {% endblock %}
+</main>
+</body>
+</html>

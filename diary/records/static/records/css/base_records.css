@@ -1,0 +1,91 @@
+/* ===== БАЗОВЫЕ СТИЛИ ===== */
+.records-page {
+    font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 30%, #fcd34d 100%);
+    color: #1e293b;
+    min-height: 100vh;
+}
+
+/* ===== ЗАГОЛОВОК ===== */
+.page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ===== ССЫЛКА НАЗАД ===== */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    background: #3b82f6;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    background: #2563eb;
+    transform: translateX(-4px);
+}
+
+/* ===== НАВИГАЦИЯ ===== */
+.records-nav {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    margin: 1rem 0 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid #facc15;
+}
+
+.nav-link {
+    color: #334155;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    background: #fef3c7;
+    color: #d97706;
+    transform: scale(1.05);
+}
+
+/* ===== РАЗДЕЛИТЕЛЬ ===== */
+.separator {
+    margin: 2rem 0;
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, #facc15, #3b82f6, #8b5cf6);
+    border-radius: 3px;
+}
+
+/* ===== ОСНОВНОЙ КОНТЕНТ ===== */
+.records-content {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(2px);
+    padding: 2rem;
+    border-radius: 32px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    margin-top: 0.5rem;
+    border: 1px solid rgba(250,204,21,0.4);
+}
+
+

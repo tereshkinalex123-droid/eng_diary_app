@@ -1,0 +1,216 @@
+/* static/records/css/notebook.css */
+
+.notebook-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f5e6c8;  /* старый пергамент */
+    border-radius: 20px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ===== ПОИСК СТИЛЬ ===== */
+.search-bookmark {
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #fffef7;
+    border-radius: 12px;
+    border: 1px solid #d4b87a;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.search-fields {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    border: 1px solid #d4b87a;
+    border-radius: 8px;
+    font-family: inherit;
+    background: #fff;
+}
+
+.tag-select {
+    padding: 0.6rem 1rem;
+    border: 1px solid #d4b87a;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.btn-find, .btn-clear {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+}
+
+.btn-find {
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-find:hover {
+    background: #7c3aed;
+    transform: scale(1.02);
+}
+
+.btn-clear {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-clear:hover {
+    background: #dc2626;
+}
+
+/* ===== РАЗВОРОТ КНИГИ ===== */
+.book-spread {
+    display: flex;
+    gap: 2rem;
+    margin: 2rem 0;
+    background: #fffef7;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-height: 500px;
+}
+
+.book-page {
+    flex: 1;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+    max-height: 600px;
+}
+
+.book-page:hover {
+    transform: translateY(-4px);
+}
+
+.left-page {
+    border-right: 2px solid #e5e7eb;
+    margin-right: 0.5rem;
+}
+
+.right-page {
+    border-left: 2px solid #e5e7eb;
+    margin-left: 0.5rem;
+}
+
+/* рукописный шрифт */
+.page-content {
+    font-family: 'Caveat', 'Segoe UI', cursive;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #2d2a24;
+}
+
+.record-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #4a3728;
+    border-bottom: 2px solid #f0e2c5;
+    padding-bottom: 0.5rem;
+}
+
+.record-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.tag {
+    background: #fef3c7;
+    color: #b45309;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-family: monospace;
+}
+
+.record-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    text-align: justify;
+}
+
+/* ползунок */
+.record-text::-webkit-scrollbar {
+    width: 8px;
+}
+
+.record-text::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.record-text::-webkit-scrollbar-thumb {
+    background: #facc15;
+    border-radius: 4px;
+}
+
+/* пустое состояние */
+.empty-notebook {
+    text-align: center;
+    padding: 4rem;
+    font-size: 1.2rem;
+    color: #a6733e;
+}
+
+/* ===== ПАГИНАЦИЯ ===== */
+.book-pagination {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    background: #fffef7;
+    padding: 0.8rem 1.5rem;
+    border-radius: 40px;
+    border: 1px solid #d4b87a;
+}
+
+.page-nav {
+    background: #8b5cf6;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.page-nav:hover {
+    background: #7c3aed;
+    transform: scale(1.02);
+}
+
+.page-counter {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #4a3728;
+}

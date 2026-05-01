@@ -1,62 +1,70 @@
 {% extends "base_records.html" %}
+{% load static %}
 
 {% block records_content %}
-
-<h2>Редактирование: {{ record.title }}</h2>
-
-<form method="post">
-    {% csrf_token %}
-
-    <div>
-        {{ form.title.label_tag }}
-        {{ form.title }}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'records/css/edit_record.css' %}">
+</head>
+<body>
+<div class="notebook-container">
+    <div class="form-bookmark">
+        <h1 class="form-title">✏️ Редактирование: {{ record.title }}</h1>
     </div>
 
-    <br>
+    <form method="post" class="record-form">
+        {% csrf_token %}
 
-    <div>
-        {{ form.content.label_tag }}
-        {{ form.content }}
-        <small>Слов: <span id="wordCount">0</span></small>
-    </div>
+        <div class="form-group">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
 
-    <br>
+        <div class="form-group">
+            {{ form.content.label_tag }}
+            {{ form.content }}
+            <div class="word-counter">📖 Слов: <span id="wordCount">0</span></div>
+        </div>
 
-<div id="tags-container">
-    {% for tag in record.tags.all %}
-        <label style="display:block;">
-            <input type="checkbox" name="tags" value="{{ tag.id }}" checked>
-            {{ tag.name }}
-        </label>
-    {% endfor %}
+        <div class="form-group">
+            <label>🏷️ Теги</label>
+            <div id="tags-container" class="tags-container">
+                {% for tag in record.tags.all %}
+                    <label class="tag-checkbox">
+                        <input type="checkbox" name="tags" value="{{ tag.id }}" checked>
+                        <span class="tag-name">#{{ tag.name }}</span>
+                    </label>
+                {% endfor %}
+            </div>
+
+            <button type="button" class="btn-add-tag" onclick="toggleTagPanel()">+ Добавить тег</button>
+
+            <div id="tag-panel" class="tag-panel" style="display:none;">
+                <div class="tag-panel-row">
+                    <select id="existing-tags" class="tag-select">
+                        {% for tag in all_tags %}
+                            <option value="{{ tag.id }}">#{{ tag.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="btn-small" onclick="addExistingTag()">Добавить</button>
+                </div>
+
+                <div class="tag-panel-row">
+                    <input type="text" id="new-tag-input" class="tag-input" placeholder="Новый тег">
+                    <button type="button" class="btn-small" onclick="addTag()">Создать</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-save">💾 Сохранить изменения</button>
+            <a href="{% url 'records:record_list' %}" class="btn-cancel">❌ Отмена</a>
+        </div>
+    </form>
 </div>
-
-    <button type="button" onclick="toggleTagPanel()">+ Добавить тег</button>
-
-    <div id="tag-panel" style="display:none;">
-
-    <select id="existing-tags">
-        {% for tag in all_tags %}
-            <option value="{{ tag.id }}">
-                {{ tag.name }}
-            </option>
-        {% endfor %}
-    </select>
-
-    <button type="button" onclick="addExistingTag()">Добавить</button>
-
-    <br>
-
-    <input type="text" id="new-tag-input" placeholder="Новый тег">
-    <button type="button" onclick="addTag()">+</button>
-
-    <hr>
-    </div>
-
-    <br>
-
-    <button type="submit">Сохранить изменения</button>
-</form>
+</body>
+</html>
 
 <script>
     const textarea = document.getElementById("id_content");
@@ -68,10 +76,7 @@
         wordCounter.textContent = words;
     }
 
-    // считаем сразу при загрузке
     countWords();
-
-    // и при вводе
     textarea.addEventListener("input", countWords);
 </script>
 
@@ -97,11 +102,10 @@ function addTag() {
         const container = document.getElementById("tags-container");
 
         const label = document.createElement("label");
-        label.style.display = "block";
-
+        label.className = "tag-checkbox";
         label.innerHTML = `
             <input type="checkbox" name="tags" value="${data.id}" checked>
-            ${data.name}
+            <span class="tag-name">#${data.name}</span>
         `;
 
         container.appendChild(label);
@@ -111,8 +115,7 @@ function addTag() {
 
 function toggleTagPanel() {
     const panel = document.getElementById("tag-panel");
-    panel.style.display =
-        panel.style.display === "none" ? "block" : "none";
+    panel.style.display = panel.style.display === "none" ? "flex" : "none";
 }
 
 function addExistingTag() {
@@ -122,18 +125,16 @@ function addExistingTag() {
 
     const container = document.getElementById("tags-container");
 
-    // если уже добавлен — не добавляем
     if (document.querySelector(`input[value="${tagId}"]`)) return;
 
     const label = document.createElement("label");
-    label.style.display = "block";
+    label.className = "tag-checkbox";
     label.innerHTML = `
         <input type="checkbox" name="tags" value="${tagId}" checked>
-        ${tagName}
+        <span class="tag-name">${tagName}</span>
     `;
 
     container.appendChild(label);
 }
 </script>
-
 {% endblock %}

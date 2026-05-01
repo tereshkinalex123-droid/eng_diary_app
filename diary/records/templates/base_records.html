@@ -1,14 +1,27 @@
-<h1>Дневник</h1>
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'records/css/base_records.css' %}">
+</head>
+<body class="records-page">
 
-<a href="/">To main page</a>
+    <h1 class="page-title">Дневник</h1>
 
-<nav>
-    <a href="{% url 'records:add_record' %}">Добавить запись</a> |
-    <a href="{% url 'records:statistics' %}">Статистика</a> |
-    <a href="{% url 'records:record_list' %}">На главную</a> |
-</nav>
+    <a href="/" class="back-link">← To main page</a>
 
-<hr>
+    <nav class="records-nav">
+        <a href="{% url 'records:add_record' %}" class="nav-link">➕ Добавить запись</a>
+        <a href="{% url 'records:statistics' %}" class="nav-link">📊 Статистика</a>
+        <a href="{% url 'records:record_list' %}" class="nav-link">📋 На главную</a>
+    </nav>
 
-{% block records_content %}
-{% endblock %}
+    <hr class="separator">
+
+    <main class="records-content">
+        {% block records_content %}
+        {% endblock %}
+    </main>
+
+</body>
+</html>

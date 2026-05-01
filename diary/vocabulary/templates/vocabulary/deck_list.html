@@ -1,42 +1,55 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
-
-<h2>Your decks</h2>
-
-<div class="deck-container">
-
-    {% if not decks %}
-        <h3>No decks</h3>
-    {% endif %}
-
-    {% for deck in decks %}
-
-    <a href="{% url 'vocabulary:deck_detail' deck.slug %}" class="deck-name">
-        {{ deck.name }}
-    </a>
-
-    <div class="deck-actions">
-        <form method="POST" action="{% url 'vocabulary:review_card' deck.slug %}">
-            {% csrf_token %}
-            <button type="submit" class="btn-review">Повторение</button>
-        </form>
-
-        <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}" onsubmit="return confirm(&quot;Удалить колоду {{ deck.name|escapejs }}?&quot;)">
-            {% csrf_token %}
-            <button type="submit" class="btn-danger">Удалить</button>
-        </form>
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/deck_list.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <div class="vocab-header">
+        <h1 class="vocab-title">📚 Your decks</h1>
     </div>
 
-    <hr>
+    <div class="decks-grid">
+        {% if not decks %}
+            <div class="empty-state">
+                <p>😢 No decks yet. Create your first deck!</p>
+            </div>
+        {% endif %}
 
-    {% endfor %}
+        {% for deck in decks %}
+            <div class="deck-card">
+                <a href="{% url 'vocabulary:deck_detail' deck.slug %}" class="deck-name">
+                    {{ deck.name }}
+                </a>
 
+                <div class="deck-actions">
+                    <form method="POST" action="{% url 'vocabulary:review_card' deck.slug %}" class="inline-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-review">🔄 Повторение</button>
+                    </form>
+
+                    <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}"
+                          class="inline-form"
+                          onsubmit="return confirm('Удалить колоду {{ deck.name|escapejs }}?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-delete">🗑 Удалить</button>
+                    </form>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="common-review-section">
+        <form method="POST" action="{% url 'vocabulary:common_review_card' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn-review-large">🎯 Общее повторение</button>
+        </form>
+    </div>
 </div>
-
-<form method="POST" action="{% url 'vocabulary:common_review_card' %}">
-    {% csrf_token %}
-    <button type="submit" class="btn-review">Повторение</button>
-</form>
-
+</body>
+</html>
 {% endblock %}

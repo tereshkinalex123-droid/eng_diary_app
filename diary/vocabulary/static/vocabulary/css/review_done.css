@@ -1,0 +1,43 @@
+/* добавить в static/vocabulary/css/vocabulary.css */
+
+/* ===== ПУСТОЕ СОСТОЯНИЕ ===== */
+.empty-state {
+    background: white;
+    padding: 3rem 2rem;
+    border-radius: 24px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+}
+
+.empty-message {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #0c4a6e;
+    margin-bottom: 0.5rem;
+}
+
+.empty-hint {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.btn-empty-back {
+    background: #8b5cf6;
+    color: white;
+    text-decoration: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.btn-empty-back:hover {
+    background: #7c3aed;
+    transform: scale(1.02);
+}

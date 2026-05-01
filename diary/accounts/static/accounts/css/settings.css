@@ -1,0 +1,134 @@
+/* static/accounts/css/settings.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.settings-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.settings-card {
+    background: white;
+    border-radius: 32px;
+    padding: 2rem;
+    width: 100%;
+    box-shadow: 0 20px 35px -10px rgba(0,0,0,0.2);
+}
+
+.settings-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.settings-title {
+    font-size: 1.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 0.25rem;
+}
+
+.settings-subtitle {
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.settings-form {
+    margin-bottom: 1rem;
+}
+
+.form-group {
+    margin-bottom: 1.25rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+}
+
+.errorlist {
+    color: #ef4444;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    list-style: none;
+}
+
+.form-help {
+    color: #94a3b8;
+    font-size: 0.7rem;
+    margin-top: 0.25rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.btn-save {
+    flex: 1;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16,185,129,0.3);
+}
+
+.btn-back {
+    flex: 0 0 auto;
+    background: #ef4444;
+    color: white;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    text-align: center;
+    transition: all 0.2s;
+}
+
+.btn-back:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+}

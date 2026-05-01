@@ -1,61 +1,85 @@
+<!-- Твой текущий шаблон (records/record_list.html) -->
 {% extends "base_records.html" %}
+{% load static %}
 
 {% block records_content %}
-<form method="get">
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'records/css/record_list.css' %}">
+</head>
+<body>
+<div class="notebook-container">
+    <!-- Поиск и фильтры (сделаны в стиле книжной закладки) -->
+    <div class="search-bookmark">
+        <form method="get" class="search-form">
+            <div class="search-fields">
+                <input type="text" name="search" placeholder="🔍 Поиск по записям..." 
+                       value="{{ search_query|default:'' }}" class="search-input">
+                
+                <select name="tag" class="tag-select">
+                    <option value="">📌 Все теги</option>
+                    {% for tag in all_tags %}
+                        <option value="{{ tag.id }}" {% if selected_tag == tag.id|stringformat:"s" %}selected{% endif %}>
+                            #{{ tag.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn-find">Найти</button>
+                <a href="{% url 'records:record_list' %}" class="btn-clear">Очистить</a>
+            </div>
+        </form>
+    </div>
 
-    <input
-        type="text"
-        name="search"
-        placeholder="Поиск..."
-        value="{{ search_query|default:'' }}"
-    >
-
-    <select name="tag">
-        <option value="">Все теги</option>
-        {% for tag in all_tags %}
-            <option value="{{ tag.id }}"
-                {% if selected_tag == tag.id|stringformat:"s" %}
-                    selected
-                {% endif %}
-            >
-                {{ tag.name }}
-            </option>
+    <!-- Разворот книги (две записи) -->
+    <div class="book-spread">
+        {% for record in page_obj %}
+            <div class="book-page {% if forloop.first %}left-page{% else %}right-page{% endif %}">
+                <div class="page-content">
+                    <a href="{% url 'records:record' record.slug %}" class="record-title-link">
+                        <h2 class="record-title">{{ record.title }}</h2>
+                    </a>
+                    
+                    <div class="record-tags">
+                        {% for tag in record.tags.all %}
+                            <span class="tag">#{{ tag.name }}</span>
+                        {% empty %}
+                            <span class="tag">#без тега</span>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="record-text">
+                        {{ record.content|linebreaks }}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="empty-notebook">
+                <p>📖 Здесь пока пусто... Напишите первую запись!</p>
+            </div>
         {% endfor %}
-    </select>
+    </div>
 
-    <button type="submit">Найти</button>
-
-    <a href="{% url 'records:record_list' %}"><button type="button">Очистить</button></a>
-
-</form>
-{% for record in page_obj %}
-    <a href="{% url 'records:record' record.slug %}">{{ record.title }}</a>
-    <p>{{ record.content|truncatewords:20 }}</p>
-    {% for tag in record.tags.all %}
-        <h4>#{{ tag.name }}</h4>
-    {% empty %}
-        <p>Тегов нет</p>
-    {% endfor %}
-{% empty %}
-    <p>Записей пока нет.</p>
-{% endfor %}
-<div>
-    {% if page_obj.has_previous %}
-        {% if selected_tag %}
-            <a href="?page={{ page_obj.previous_page_number }}&search={{ search_query }}&tag={{ selected_tag }}">Назад</a>
-        {% else %}
-            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
-        {% endif %}
-    {% endif %}
-
-    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-
-    {% if page_obj.has_next %}
-        {% if selected_tag %}
-            <a href="?page={{ page_obj.next_page_number }}&search={{ search_query }}&tag={{ selected_tag }}">Назад</a>
-        {% else %}
-            <a href="?page={{ page_obj.next_page_number }}">Назад</a>
-        {% endif %}
-    {% endif %}
+    <!-- Пагинация в виде счётчика страниц -->
+    <div class="book-pagination">
+        <div class="pagination-wrapper">
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_tag %}&tag={{ selected_tag }}{% endif %}" 
+                   class="page-nav prev">◀ Предыдущий разворот</a>
+            {% endif %}
+            
+            <span class="page-counter">
+                📖 Разворот {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+            </span>
+            
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&search={{ search_query }}{% endif %}{% if selected_tag %}&tag={{ selected_tag }}{% endif %}" 
+                   class="page-nav next">Следующий разворот ▶</a>
+            {% endif %}
+        </div>
+    </div>
 </div>
+</body>
+</html>
 {% endblock %}

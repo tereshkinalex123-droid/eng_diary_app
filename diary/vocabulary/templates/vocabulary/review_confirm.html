@@ -1,18 +1,38 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
-<h2>Недостаточно карточек</h2>
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_confirm.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <div class="warning-header">
+        <h1 class="warning-title">⚠️ Недостаточно карточек</h1>
+    </div>
 
-<p>У вас только {{ cards_count }} карточек для повторения, а вы запросили {{ limit }}.</p>
-<p>Начать повторение с {{ cards_count }} карточками?</p>
+    <div class="warning-card">
+        <p class="warning-text">
+            У вас только <strong>{{ cards_count }}</strong> карточек для повторения,<br>
+            а вы запросили <strong>{{ limit }}</strong>.
+        </p>
+        <p class="warning-question">Начать повторение с {{ cards_count }} карточками?</p>
 
-{% if deck_slug %}
-    <form method="post" action="{% url 'vocabulary:confirm_review' deck_slug=deck_slug %}">
-{% else %}
-    <form method="post" action="{% url 'vocabulary:confirm_common_review' %}">
-{% endif %}
-    {% csrf_token %}
-    <button type="submit" name="choice" value="yes">Да, начать</button>
-    <a href="{% url 'vocabulary:deck_list' %}">Нет, вернуться</a>
-</form>
+        {% if deck_slug %}
+            <form method="post" action="{% url 'vocabulary:confirm_review' deck_slug=deck_slug %}" class="warning-form">
+        {% else %}
+            <form method="post" action="{% url 'vocabulary:confirm_common_review' %}" class="warning-form">
+        {% endif %}
+            {% csrf_token %}
+            <div class="warning-actions">
+                <button type="submit" name="choice" value="yes" class="btn-warning-yes">✅ Да, начать</button>
+                <a href="{% url 'vocabulary:deck_list' %}" class="btn-warning-no">❌ Нет, вернуться</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}

@@ -1,0 +1,85 @@
+/* vocabulary.css */
+
+.vocabulary-page {
+    font-family: 'Segoe UI', 'Roboto', system-ui, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 30%, #7dd3fc 100%);
+    color: #0c4a6e;
+    min-height: 100vh;
+}
+
+.page-title {
+    font-size: 3rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.back-link {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    background: #0284c7;
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.back-link:hover {
+    background: #0369a1;
+    transform: translateX(-4px);
+}
+
+.vocabulary-nav {
+    background: white;
+    padding: 1rem 1.5rem;
+    border-radius: 999px;
+    margin: 1rem 0 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    align-items: center;
+    border: 1px solid #38bdf8;
+}
+
+.nav-link {
+    color: #0c4a6e;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.4rem 0.8rem;
+    border-radius: 999px;
+    transition: all 0.2s;
+}
+
+.nav-link:hover {
+    background: #e0f2fe;
+    color: #0284c7;
+    transform: scale(1.05);
+}
+
+.separator {
+    margin: 2rem 0;
+    border: none;
+    height: 3px;
+    background: linear-gradient(90deg, #38bdf8, #0284c7, #0369a1);
+    border-radius: 3px;
+}
+
+.vocabulary-content {
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(2px);
+    padding: 2rem;
+    border-radius: 32px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    margin-top: 0.5rem;
+    border: 1px solid rgba(56,189,248,0.4);
+}

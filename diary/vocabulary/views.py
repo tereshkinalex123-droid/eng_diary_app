@@ -56,6 +56,8 @@ def deck_delete(request,deck_slug):
 @login_required
 def card_list(request):
     cards = Card.objects.filter(user=request.user).order_by('-created_at')
+    for card in cards:
+        print(f"{card.id}: {card.front}")
 
     return render(request, 'vocabulary/card_list.html', {'cards': cards})
 
@@ -95,11 +97,11 @@ def card_create(request, deck_slug=None):
         return render(request, 'vocabulary/card_create.html', {'form': form,})
 
 @login_required
-def card_edit(request, card_slug):
+def card_edit(request, card_id):
     card = get_object_or_404(
         Card,
         user=request.user,
-        slug=card_slug,
+        id=card_id,
     )
 
     if request.method == 'POST':

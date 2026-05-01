@@ -1,40 +1,45 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/card_list.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <a href="{% url 'vocabulary:deck_list' %}" class="back-link">← Back to decks</a>
 
-<a href="{% url 'vocabulary:deck_list' %}" class="back">Back</a>
-
-<h1>All cards</h1>
-
-<a href="{% url 'vocabulary:card_create' %}" class="add-card-btn">
-    Add new card
-</a>
-
-<hr>
-
-<div class="cards-container">
-
-{% if not cards %}
-    <h3>No cards</h3>
-{% endif %}
-{% for card in cards %}
-
-<a href="{% url 'vocabulary:card_edit' card.slug %}" class="card-block">
-
-    <div class="card-front">
-        {{ card.front }}
+    <div class="page-header">
+        <h1 class="page-title">📇 Все карточки</h1>
+        <a href="{% url 'vocabulary:card_create' %}" class="btn-add-card">➕ Добавить карту</a>
     </div>
 
-    <div class="card-back">
-        {{ card.back }}
+    <div class="divider"></div>
+
+    <div class="cards-grid">
+        {% if not cards %}
+            <div class="empty-state">
+                <p>😢 Нет карточек. Создайте первую!</p>
+            </div>
+        {% endif %}
+
+        {% for card in cards %}
+            <a href="{% url 'vocabulary:card_edit' card.id %}" class="card-card">
+                <div class="card-front-side">
+                    <span class="card-label">Вопрос:</span>
+                    <p class="card-text">{{ card.front }}</p>
+                </div>
+                <div class="card-divider"></div>
+                <div class="card-back-side">
+                    <span class="card-label">Ответ:</span>
+                    <p class="card-text">{{ card.back }}</p>
+                </div>
+            </a>
+        {% endfor %}
     </div>
-
-    <hr>
-
-</a>
-
-{% endfor %}
-
 </div>
-
+</body>
+</html>
 {% endblock %}

@@ -1,46 +1,57 @@
 {% extends "base_records.html" %}
+{% load static %}
 
 {% block records_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'records/css/record.css' %}">
+    <title>{{ record.title }} | LinguaFlow</title>
+</head>
+<body>
+<div class="notebook-container">
+    <div class="record-page">
+        <div class="record-header">
+            <h1 class="record-title">{{ record.title }}</h1>
+            <div class="record-date">📅 {{ record.date|date:"d.m.Y" }}</div>
+        </div>
 
-{% block title %}
-{{record.title}}
-{% endblock %}
+        <div class="record-divider"></div>
 
-<article>
+        <div class="record-content">
+            {{ record.content|linebreaks }}
+        </div>
 
-    <h2>{{ record.title }}</h2>
+        <div class="record-divider"></div>
 
-    <p><small>Создано {{ record.date }}</small></p>
+        <div class="record-meta">
+            <div class="word-count">📖 <strong>Слов:</strong> {{ record.word_count }}</div>
 
-    <hr>
+            <div class="tags-section">
+                <strong>🏷️ Теги:</strong>
+                <div class="tags-list">
+                    {% for tag in record.tags.all %}
+                        <span class="tag">#{{ tag.name }}</span>
+                    {% empty %}
+                        <span class="no-tags">нет тегов</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
 
-    <div>  {{ record.content|linebreaks }}</div>
-
-    <hr>
-
-    <p><strong>Слов:</strong>{{ record.word_count }}</p>
-
-    <p>
-        {% for tag in record.tags.all %}
-            <p>#{{ tag }} </p>
-        {% empty %}
-            <em>Нет тегов</em>
-        {% endfor %}
-    </p>
-
-    <br>
-
-    <form action="{% url 'records:delete_record' record.slug %}"
-      method="post"
-      style="display:inline;"
-      onsubmit="return confirm('Вы уверены, что хотите удалить запись?');">
-    {% csrf_token %}
-    <button type="submit">🗑 Удалить</button>
-    </form>
-
-    <a href="{% url 'records:edit_record' record.slug %}">Редактировать</a>
-    <a href="{% url 'records:record_list' %}">Назад к списку</a>
-
-</article>
-
+        <div class="record-actions">
+            <form action="{% url 'records:delete_record' record.slug %}"
+                  method="post"
+                  style="display:inline;"
+                  onsubmit="return confirm('Вы уверены, что хотите удалить запись?');">
+                {% csrf_token %}
+                <button type="submit" class="btn-delete">🗑 Удалить</button>
+            </form>
+            <a href="{% url 'records:edit_record' record.slug %}" class="btn-edit">✏️ Редактировать</a>
+            <a href="{% url 'records:record_list' %}" class="btn-back">📖 Назад к списку</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}

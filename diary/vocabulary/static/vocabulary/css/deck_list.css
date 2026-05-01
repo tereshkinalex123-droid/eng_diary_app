@@ -1,0 +1,142 @@
+/* static/vocabulary/css/vocabulary.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
+    min-height: 100vh;
+}
+
+.vocab-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+.vocab-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.vocab-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #0284c7, #38bdf8);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.decks-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.deck-card {
+    background: white;
+    padding: 1.2rem 1.5rem;
+    border-radius: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.deck-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.deck-name {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #0c4a6e;
+    text-decoration: none;
+    flex: 1;
+}
+
+.deck-name:hover {
+    color: #0284c7;
+}
+
+.deck-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn-review, .btn-delete {
+    padding: 0.4rem 1rem;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-review {
+    background: #10b981;
+    color: white;
+}
+
+.btn-review:hover {
+    background: #059669;
+    transform: scale(1.02);
+}
+
+.btn-delete {
+    background: #ef4444;
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #dc2626;
+    transform: scale(1.02);
+}
+
+.empty-state {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.common-review-section {
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.btn-review-large {
+    background: #8b5cf6;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-review-large:hover {
+    background: #7c3aed;
+    transform: scale(1.02);
+}
+
+hr {
+    margin: 0;
+}

@@ -19,6 +19,7 @@ def signup(request):
 def profile(request):
     return render(request, 'accounts/profile.html', {
         'user': request.user,
+        'streak': request.user.streak,
     })
 
 @login_required

@@ -1,54 +1,60 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/deck_detail.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <a href="{% url 'vocabulary:deck_list' %}" class="back-link">← Back to decks</a>
 
-<a href="{% url 'vocabulary:deck_list'%}" class="back">Back</a>
+    <div class="deck-header">
+        <h1 class="deck-title">{{ deck.name }}</h1>
+    </div>
 
-<h1>{{ deck.name }}</h1>
-
-<div>
-
-    <form method="POST" action="{% url 'vocabulary:card_create_in_deck' deck.slug %}">
-        {% csrf_token %}
-        <button type="submit" class="btn-add-new-card">Добавить новую карту</button>
-    </form>
-        <form method="POST" action="{% url 'vocabulary:review_card' deck.slug %}">
+    <div class="deck-actions-bar">
+        <form method="POST" action="{% url 'vocabulary:card_create_in_deck' deck.slug %}" class="inline-form">
             {% csrf_token %}
-            <button type="submit" class="btn-review">Повторение</button>
+            <button type="submit" class="btn add-card">➕ Добавить карту</button>
         </form>
-    <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}" onsubmit="return confirm(&quot;Удалить колоду {{ deck.name|escapejs }}?&quot;)">
-        {% csrf_token %}
-        <button type="submit" class="btn-danger">Удалить</button>
-    </form>
 
+        <form method="POST" action="{% url 'vocabulary:review_card' deck.slug %}" class="inline-form">
+            {% csrf_token %}
+            <button type="submit" class="btn review">🔄 Повторение</button>
+        </form>
+
+        <form method="POST" action="{% url 'vocabulary:deck_delete' deck.slug %}"
+              class="inline-form"
+              onsubmit="return confirm('Удалить колоду {{ deck.name|escapejs }}?');">
+            {% csrf_token %}
+            <button type="submit" class="btn delete">🗑 Удалить</button>
+        </form>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="cards-section">
+        <h2 class="section-title">📇 Карточки</h2>
+
+        {% if cards %}
+            <div class="cards-list">
+                {% for card in cards %}
+                    <a href="{% url 'vocabulary:card_edit' card.id %}" class="card-item">
+                        <span class="card-front">{{ card.front }}</span>
+                        <span class="card-arrow">→</span>
+                    </a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-cards">
+                <p>😢 Нет карточек. Добавьте первую!</p>
+            </div>
+        {% endif %}
+    </div>
 </div>
-
-<hr>
-
-<h3>Cards</h3>
-
-{% if deck.cards %}
-
-<ul>
-
-{% for card in cards %}
-
-<li>
-
-<a href="{% url 'vocabulary:card_edit' card.id %}">
-    {{ card.front }}
-</a>
-
-</li>
-
-{% endfor %}
-
-</ul>
-
-{% else %}
-
-<p>No cards yet</p>
-
-{% endif %}
-
+</body>
+</html>
 {% endblock %}

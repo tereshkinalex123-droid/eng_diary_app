@@ -29,7 +29,7 @@ def record_list(request): #main page
 
     records = records.distinct() #remove duplicates
 
-    paginator = Paginator(records, 5) #pagination
+    paginator = Paginator(records, 2) #pagination
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
 

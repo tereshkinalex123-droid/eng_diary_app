@@ -1,76 +1,71 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
-
-<div class="container mt-4">
-    <div class="progress mb-3">
-        <div class="progress-bar" role="progressbar"
-             style="width: {{ current|divisibleby:total|default:0 }}%">
-            {{ current }} / {{ total }}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_card.css' %}">
+</head>
+<body>
+<div class="review-container">
+    <!-- Прогресс-бар -->
+<!-- Исправленный блок прогресс-бара -->
+    <div class="progress-wrapper">
+        <div class="progress-bar-custom" style="width: {% widthratio current total 100 %}%">
+            <span class="progress-text">{{ current }} / {{ total }}</span>
         </div>
     </div>
 
-    <form method="POST" action="{% url 'vocabulary:end_review' session_id %}" onsubmit="return confirm(&quot;Закончить повторение?&quot;)">
-        {% csrf_token %}
-        <button type="submit" class="btn-danger">Закончить повторение</button>
-    </form>
+    <!-- Кнопка закончить -->
+    <div class="end-review-wrapper">
+        <form method="POST" action="{% url 'vocabulary:end_review' session_id %}"
+              onsubmit="return confirm('Закончить повторение?')" class="end-form">
+            {% csrf_token %}
+            <button type="submit" class="btn-end">🏁 Закончить повторение</button>
+        </form>
+    </div>
 
-    <div class="card mb-4">
-        <div class="card-body text-center" style="min-height: 300px;">
-            <!-- Фронт карточки (виден всегда) -->
-            <div id="front-side">
-                <h3>{{ card.front }}</h3>
+    <!-- Карточка -->
+    <div class="review-card">
+        <div class="card-inner">
+            <!-- Фронт карточки -->
+            <div id="front-side" class="card-front">
+                <h2 class="card-question">{{ card.front }}</h2>
                 {% if card.hint %}
-                    <button id="show-hint" class="btn btn-secondary btn-sm mt-2">
-                        Показать подсказку
-                    </button>
-                    <div id="hint-text" class="alert alert-info mt-2" style="display: none;">
+                    <button id="show-hint" class="btn-hint">💡 Показать подсказку</button>
+                    <div id="hint-text" class="hint-text" style="display: none;">
                         {{ card.hint }}
                     </div>
                 {% endif %}
-                <button id="flip-card" class="btn btn-primary mt-3">
-                    Перевернуть карточку
-                </button>
+                <button id="flip-card" class="btn-flip">🔄 Перевернуть карточку</button>
             </div>
 
-            <!-- Бэк карточки (скрыт изначально) -->
-            <div id="back-side" style="display: none;">
-                <h3>{{ card.back }}</h3>
+            <!-- Бэк карточки -->
+            <div id="back-side" class="card-back" style="display: none;">
+                <h2 class="card-answer">{{ card.back }}</h2>
             </div>
         </div>
     </div>
 
-    <!-- Форма с оценками (скрыта, пока карта не перевёрнута) -->
-    <div id="rating-form" style="display: none;">
-        <form method="post">
+    <!-- Форма с оценками -->
+    <div id="rating-form" class="rating-section" style="display: none;">
+        <form method="post" class="rating-form">
             {% csrf_token %}
-            <p class="text-center">Насколько легко вы вспомнили?</p>
-            <div class="d-flex justify-content-center gap-2">
-                <button type="submit" name="quality" value="0" class="btn btn-danger">
-                    0 - Забыл
-                </button>
-                <button type="submit" name="quality" value="1" class="btn btn-warning">
-                    1 - Трудно
-                </button>
-                <button type="submit" name="quality" value="2" class="btn btn-warning">
-                    2 - Сложно
-                </button>
-                <button type="submit" name="quality" value="3" class="btn btn-info">
-                    3 - Нормально
-                </button>
-                <button type="submit" name="quality" value="4" class="btn btn-success">
-                    4 - Легко
-                </button>
-                <button type="submit" name="quality" value="5" class="btn btn-success">
-                    5 - Очень легко
-                </button>
+            <p class="rating-title">📊 Насколько легко вы вспомнили?</p>
+            <div class="rating-buttons">
+                <button type="submit" name="quality" value="0" class="btn-quality q-0">0 - Забыл</button>
+                <button type="submit" name="quality" value="1" class="btn-quality q-1">1 - Трудно</button>
+                <button type="submit" name="quality" value="2" class="btn-quality q-2">2 - Сложно</button>
+                <button type="submit" name="quality" value="3" class="btn-quality q-3">3 - Нормально</button>
+                <button type="submit" name="quality" value="4" class="btn-quality q-4">4 - Легко</button>
+                <button type="submit" name="quality" value="5" class="btn-quality q-5">5 - Очень легко</button>
             </div>
         </form>
     </div>
 </div>
 
 <script>
-    // Показать подсказку
     const hintBtn = document.getElementById('show-hint');
     if (hintBtn) {
         hintBtn.onclick = function() {
@@ -78,7 +73,6 @@
         };
     }
 
-    // Переворот карточки
     const flipBtn = document.getElementById('flip-card');
     const frontSide = document.getElementById('front-side');
     const backSide = document.getElementById('back-side');
@@ -90,5 +84,6 @@
         ratingForm.style.display = 'block';
     };
 </script>
-
+</body>
+</html>
 {% endblock %}

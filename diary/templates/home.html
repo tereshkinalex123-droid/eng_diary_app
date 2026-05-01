@@ -1,20 +1,57 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'diary/css/diary_base.css' %}">
     <meta charset="UTF-8">
-    <title>главная йоу</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LinguaFlow</title>
 </head>
 <body>
-<h1>Твой помощник для английского</h1>
+    <div class="app-landing">
+        <div class="top-bar">
+            <div class="logo-area"></div>
+            <div class="brand-center">
+                <h1 class="app-title">✨ LinguaFlow ✨</h1>
+            </div>
+            <div class="profile-card">
+                    <div class="profile-wrapper">
+                        <div class="avatar">{{ user.username|make_list|first }}{{ user.username|make_list|last }}</div>
+                        <div class="user-info">
+                            <a href="{% url 'accounts:profile' %}"  class="user-name">{{ user.username }}</a>
+                            <div class="streak-badge">
+                                <span>🔥</span>
+                                <span>{{ user.streak.current_streak|default:0 }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Выйти</button>
+                    </form>
+            </div>
+        </div>
 
-{% if user.is_authenticated %}
-    <a href="{% url 'accounts:profile' %}">{{ user.username }}</a>
-    <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button>Выйти</button></form>
-{% else %}
-    <a href="{% url 'login' %}">Войти</a>
-{% endif %}
+        <!-- Центральные картинки-ссылки -->
+        <div class="cards-container">
+            <a href="{% url 'vocabulary:deck_list' %}" class="feature-card">
+                <div class="card-image">
+                    <img src="static/diary/images/vocabulary.png" alt="Словарь">
+                </div>
+                <div class="card-title">Словарь 📖</div>
+                <div class="card-description">Учи новые слова каждый день</div>
+            </a>
 
-<a href="{% url 'records:record_list' %}">Дневник</a>
-<a href="{% url 'vocabulary:deck_list' %}">Словарь</a>
+            <a href="{% url 'records:record_list' %}" class="feature-card">
+                <div class="card-image">
+                    <img src="static/diary/images/diary.png" alt="Дневник">
+                </div>
+                <div class="card-title">Дневник 📝</div>
+                <div class="card-description">Записывай мысли и практикуйся</div>
+            </a>
+        </div>
+
+    </div>
 </body>
 </html>

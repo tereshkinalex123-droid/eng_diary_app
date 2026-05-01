@@ -1,9 +1,21 @@
 {% extends "base_vocabulary.html" %}
+{% load static %}
 
 {% block vocabulary_content %}
-
-<p>There are no cards for review</p>
-
-<a href="{% url 'vocabulary:deck_list' %}" class="back">Back to decks</a>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_done.css' %}">
+</head>
+<body>
+<div class="vocab-container">
+    <div class="empty-state">
+        <div class="empty-icon">📭</div>
+        <p class="empty-message">Нет карточек для повторения</p>
+        <p class="empty-hint">Все карточки изучены или пока не созданы</p>
+        <a href="{% url 'vocabulary:deck_list' %}" class="btn-empty-back">← Вернуться к колодам</a>
+    </div>
+</div>
+</body>
+</html>
 {% endblock %}
