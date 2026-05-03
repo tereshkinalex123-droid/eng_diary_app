@@ -7,7 +7,11 @@ User = get_user_model()
 
 class Tag(models.Model):
     name = models.CharField(max_length=100, unique=True)
-
+    user = models.ForeignKey( #юзер
+        User,
+        on_delete=models.CASCADE,
+        related_name="tags",
+    )
     def __str__(self):
         return self.name
 

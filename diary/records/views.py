@@ -37,7 +37,7 @@ def record_list(request): #main page
         'page_obj': page_obj,
         'search_query': query,
         'selected_tag': tag,
-        'all_tags': Tag.objects.all(),
+        'all_tags': Tag.objects.filter(user=request.user),
     }
 
     return render(request, 'records/record_list.html', context)
@@ -72,7 +72,7 @@ def add_record(request):
             return redirect('records:record_list')
     else:
         form = RecordForm()
-    return render(request, 'records/add_record.html', {'form': form, 'all_tags': Tag.objects.all()})
+    return render(request, 'records/add_record.html', {'form': form, 'all_tags': Tag.objects.filter(user=request.user)})
 
 @login_required
 def edit_record(request, slug):
@@ -100,7 +100,7 @@ def edit_record(request, slug):
     else:
         form = RecordForm(instance=record)
 
-    return render(request, 'records/edit_record.html', {'form': form, 'record': record, 'all_tags': Tag.objects.all()})
+    return render(request, 'records/edit_record.html', {'form': form, 'record': record, 'all_tags': Tag.objects.filter(user=request.user)})
 
 @login_required
 def delete_record(request, slug):
