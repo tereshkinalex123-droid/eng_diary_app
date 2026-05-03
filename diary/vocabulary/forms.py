@@ -1,5 +1,5 @@
 from django import forms
-from .models import Card, Deck, ReviewSession
+from .models import Card, Deck
 
 
 class CardForm(forms.ModelForm):

@@ -18,6 +18,14 @@
         <form method="post" class="auth-form">
             {% csrf_token %}
 
+            {% if form.non_field_errors %}
+                <div class="alert_error">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
             {% for field in form %}
                 <div class="form-group">
                     <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>

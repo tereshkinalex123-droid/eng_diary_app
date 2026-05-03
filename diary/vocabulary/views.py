@@ -56,8 +56,6 @@ def deck_delete(request,deck_slug):
 @login_required
 def card_list(request):
     cards = Card.objects.filter(user=request.user).order_by('-created_at')
-    for card in cards:
-        print(f"{card.id}: {card.front}")
 
     return render(request, 'vocabulary/card_list.html', {'cards': cards})
 
@@ -74,7 +72,7 @@ def card_create(request, deck_slug=None):
         )
 
     if request.method == "POST":
-        form = CardForm(request.POST, user=request.user)
+        form = CardForm(request.POST, user=request.user, deck=deck)
         if form.is_valid():
             card = form.save(commit=False)
             card.user = request.user
@@ -109,7 +107,10 @@ def card_edit(request, card_id):
         if form.is_valid():
             card = form.save()
             deck = card.deck
-            return redirect('vocabulary:deck_detail', deck_slug=deck.slug)
+            if deck:
+                return redirect('vocabulary:deck_detail', deck_slug=deck.slug)
+            else:
+                return redirect('vocabulary:common_deck')
     else:
         form = CardForm(instance=card)
 

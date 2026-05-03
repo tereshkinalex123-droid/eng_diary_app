@@ -127,3 +127,7 @@ body {
 .auth-link:hover {
     text-decoration: underline;
 }
+
+.alert_error{
+    color: red;
+}
