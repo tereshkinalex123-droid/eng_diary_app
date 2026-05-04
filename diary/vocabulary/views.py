@@ -82,6 +82,14 @@ def card_create(request, deck_slug=None):
 
             card.save()
 
+            CardProgress.objects.create(
+                card=card,
+                user=request.user,
+                next_review=timezone.now().date()
+            )
+
+            print(f"{card.front} {card.card_progress.next_review}")
+
             if deck:
                 return redirect('vocabulary:deck_detail', deck_slug=deck.slug)
             else:

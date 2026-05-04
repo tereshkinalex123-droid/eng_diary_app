@@ -30,7 +30,7 @@ class Deck(models.Model):
         ]
 
     def __str__(self):
-        return f"{self.user.username}: {self.name}"
+        return self.name
 
     def save(self, *args, **kwargs):
         if not self.pk:
@@ -51,7 +51,7 @@ class Card(models.Model):
     front = models.CharField(max_length=50)
     back = models.CharField(max_length=50)
     examples = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateField(auto_now_add=True)
     hint = models.TextField(blank=True)
 
     def __str__(self):
@@ -88,7 +88,7 @@ class Card(models.Model):
 
 
 class CardProgress(models.Model):
-    card = models.ForeignKey(
+    card = models.OneToOneField(
         Card,
         on_delete=models.CASCADE,
         related_name='card_progress'
@@ -104,8 +104,8 @@ class CardProgress(models.Model):
     repetitions  = models.IntegerField(default=0)
     interval  = models.PositiveIntegerField(default=0)
 
-    next_review = models.DateTimeField(default=timezone.now)
-    last_review = models.DateTimeField(blank=True, null=True)
+    next_review = models.DateField(default=timezone.now().date())
+    last_review = models.DateField(blank=True, null=True)
 
     def update_after_review(self, quality):
         self.last_reviewed = timezone.now()
