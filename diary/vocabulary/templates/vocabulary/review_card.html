@@ -2,22 +2,13 @@
 {% load static %}
 
 {% block vocabulary_content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_card.css' %}">
-</head>
-<body>
 <div class="review-container">
-    <!-- Прогресс-бар -->
-<!-- Исправленный блок прогресс-бара -->
     <div class="progress-wrapper">
-        <div class="progress-bar-custom" style="width: {% widthratio current total 100 %}%">
-            <span class="progress-text">{{ current }} / {{ total }}</span>
+        <div class="progress-bar-custom" id="progress-bar" style="width: {% widthratio current total 100 %}%">
+            <span class="progress-text" id="progress-text">{{ current }} / {{ total }}</span>
         </div>
     </div>
 
-    <!-- Кнопка закончить -->
     <div class="end-review-wrapper">
         <form method="POST" action="{% url 'vocabulary:end_review' session_id %}"
               onsubmit="return confirm('Закончить повторение?')" class="end-form">
@@ -26,46 +17,104 @@
         </form>
     </div>
 
-    <!-- Карточка -->
     <div class="review-card">
         <div class="card-inner">
-            <!-- Фронт карточки -->
             <div id="front-side" class="card-front">
-                <h2 class="card-question">{{ card.front }}</h2>
+                <h2 id="card-front">{{ card.front }}</h2>
                 {% if card.hint %}
                     <button id="show-hint" class="btn-hint">💡 Показать подсказку</button>
-                    <div id="hint-text" class="hint-text" style="display: none;">
-                        {{ card.hint }}
-                    </div>
+                    <div id="hint-text" class="hint-text" style="display: none;">{{ card.hint }}</div>
                 {% endif %}
-                <button id="flip-card" class="btn-flip">🔄 Перевернуть карточку</button>
+                <button id="flip-card" class="btn-flip">🔄 Перевернуть</button>
             </div>
-
-            <!-- Бэк карточки -->
             <div id="back-side" class="card-back" style="display: none;">
-                <h2 class="card-answer">{{ card.back }}</h2>
+                <h2 id="card-back">{{ card.back }}</h2>
             </div>
         </div>
     </div>
 
-    <!-- Форма с оценками -->
     <div id="rating-form" class="rating-section" style="display: none;">
-        <form method="post" class="rating-form">
-            {% csrf_token %}
-            <p class="rating-title">📊 Насколько легко вы вспомнили?</p>
-            <div class="rating-buttons">
-                <button type="submit" name="quality" value="0" class="btn-quality q-0">0 - Забыл</button>
-                <button type="submit" name="quality" value="1" class="btn-quality q-1">1 - Трудно</button>
-                <button type="submit" name="quality" value="2" class="btn-quality q-2">2 - Сложно</button>
-                <button type="submit" name="quality" value="3" class="btn-quality q-3">3 - Нормально</button>
-                <button type="submit" name="quality" value="4" class="btn-quality q-4">4 - Легко</button>
-                <button type="submit" name="quality" value="5" class="btn-quality q-5">5 - Очень легко</button>
-            </div>
-        </form>
+        <p class="rating-title">📊 Насколько легко вы вспомнили?</p>
+        <div class="rating-buttons">
+            <button type="button" class="btn-quality q-0" onclick="submitAnswer(0)">0 - Забыл</button>
+            <button type="button" class="btn-quality q-1" onclick="submitAnswer(1)">1 - Трудно</button>
+            <button type="button" class="btn-quality q-2" onclick="submitAnswer(2)">2 - Сложно</button>
+            <button type="button" class="btn-quality q-3" onclick="submitAnswer(3)">3 - Нормально</button>
+            <button type="button" class="btn-quality q-4" onclick="submitAnswer(4)">4 - Легко</button>
+            <button type="button" class="btn-quality q-5" onclick="submitAnswer(5)">5 - Очень легко</button>
+        </div>
     </div>
 </div>
 
 <script>
+    function getCookie(name) {
+        let value = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    value = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return value;
+    }
+
+    const csrfToken = getCookie('csrftoken');
+    const sessionId = '{{ session_id }}';
+    const resultsUrl = "{% url 'vocabulary:session_results' 999 %}".replace('999', sessionId);
+
+    function submitAnswer(quality) {
+        fetch(window.location.href, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({ quality: quality })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                console.error('Server error:', data.error);
+                window.location.reload();
+                return;
+            }
+
+            if (data.has_next) {
+                document.getElementById('card-front').textContent = data.front;
+                document.getElementById('card-back').textContent = data.back;
+
+                const hintDiv = document.getElementById('hint-text');
+                const showHintBtn = document.getElementById('show-hint');
+                if (data.hint && showHintBtn) {
+                    hintDiv.textContent = data.hint;
+                    showHintBtn.style.display = 'inline-block';
+                    hintDiv.style.display = 'none';
+                } else if (showHintBtn) {
+                    showHintBtn.style.display = 'none';
+                }
+
+                document.getElementById('progress-text').textContent = `${data.current} / ${data.total}`;
+                const percent = (data.current / data.total) * 100;
+                document.getElementById('progress-bar').style.width = `${percent}%`;
+
+                document.getElementById('front-side').style.display = 'block';
+                document.getElementById('back-side').style.display = 'none';
+                document.getElementById('rating-form').style.display = 'none';
+            } else {
+                window.location.href = data.redirect_url || resultsUrl;
+            }
+        })
+        .catch(error => {
+            console.error('Fetch error:', error);
+            window.location.reload();
+        });
+    }
+
     const hintBtn = document.getElementById('show-hint');
     if (hintBtn) {
         hintBtn.onclick = function() {
@@ -74,16 +123,10 @@
     }
 
     const flipBtn = document.getElementById('flip-card');
-    const frontSide = document.getElementById('front-side');
-    const backSide = document.getElementById('back-side');
-    const ratingForm = document.getElementById('rating-form');
-
     flipBtn.onclick = function() {
-        frontSide.style.display = 'none';
-        backSide.style.display = 'block';
-        ratingForm.style.display = 'block';
+        document.getElementById('front-side').style.display = 'none';
+        document.getElementById('back-side').style.display = 'block';
+        document.getElementById('rating-form').style.display = 'block';
     };
 </script>
-</body>
-</html>
 {% endblock %}
