@@ -2,6 +2,12 @@
 {% load static %}
 
 {% block vocabulary_content %}
+<!DOCTYPE html>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{% static 'vocabulary/css/review_card.css' %}">
+</head>
+<body>
 <div class="review-container">
     <div class="progress-wrapper">
         <div class="progress-bar-custom" id="progress-bar" style="width: {% widthratio current total 100 %}%">
@@ -45,7 +51,8 @@
         </div>
     </div>
 </div>
-
+</body>
+</html>
 <script>
     function getCookie(name) {
         let value = null;
