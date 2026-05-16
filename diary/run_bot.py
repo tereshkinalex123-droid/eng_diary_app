@@ -189,9 +189,9 @@ async def process_deck(message: types.Message, state: FSMContext):
     success = await save_card(message.from_user.id, card_data)
 
     if success:
-        await message.answer("Сохранено успешни успех")
+        await message.answer("Карта успешно сохранена!")
     else:
-        await message.answer("лошарски лох")
+        await message.answer("❌ Произошла ошибка при сохранении.")
 
     await state.clear()
 
