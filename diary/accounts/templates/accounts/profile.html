@@ -2,12 +2,8 @@
 {% load static %}
 
 {% block registration_content %}
-<!DOCTYPE html>
-<html>
-<head>
-    <link type="text/css" rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
-</head>
-<body>
+<link type="text/css" rel="stylesheet" href="{% static 'accounts/css/profile.css' %}">
+
 <div class="profile-container">
     <div class="profile-card">
         <div class="profile-header">
@@ -23,23 +19,34 @@
                 <span class="info-label">📧 Email</span>
                 <span class="info-value">{{ user.email|default:"не указан" }}</span>
             </div>
-            <div class="info-row">
-                <span class="info-label">📅 Дата регистрации</span>
-                <span class="info-value">{{ user.date_joined|date:"d.m.Y" }}</span>
-            </div>
         </div>
 
+        <!-- Секция Стрика -->
         <div class="streak-section">
             <div class="streak-card">
                 <div class="streak-icon">🔥</div>
-                <div class="streak-value">{{ streak.current_streak }}</div>
+                <div class="streak-value">{{ streak.current_streak|default:0 }}</div>
                 <div class="streak-label">текущий стрик</div>
             </div>
             <div class="streak-card">
                 <div class="streak-icon">🏆</div>
-                <div class="streak-value">{{ streak.max_streak }}</div>
+                <div class="streak-value">{{ streak.max_streak|default:0 }}</div>
                 <div class="streak-label">максимальный стрик</div>
             </div>
+        </div>
+
+        <!-- Секция Telegram -->
+        <div class="tg-integration" style="margin: 20px 0; padding: 15px; border-radius: 12px; background: #f0f7ff; text-align: center;">
+            {% if tg_link %}
+                <p style="margin-bottom: 10px; font-size: 0.9em; color: #555;">Подключите бота для управления аккаунтом</p>
+                <a href="{{ tg_link }}" class="btn-action" style="background: #0088cc; color: white; text-decoration: none; display: inline-block; padding: 10px 20px; border-radius: 8px;">
+                    ✈️ Привязать Telegram
+                </a>
+            {% else %}
+                <p style="color: #28a745; font-weight: bold; margin: 0;">
+                    ✅ Telegram подключен (ID: {{ profile.telegram_id }})
+                </p>
+            {% endif %}
         </div>
 
         <div class="profile-actions">
@@ -52,6 +59,4 @@
         </div>
     </div>
 </div>
-</body>
-</html>
 {% endblock %}
