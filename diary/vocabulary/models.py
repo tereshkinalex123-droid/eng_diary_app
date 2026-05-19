@@ -5,6 +5,8 @@ from django.contrib.auth import get_user_model
 from django.db.models.functions import Lower
 from django.utils.text import slugify
 import math
+from unidecode import unidecode
+from django.template import defaultfilters
 
 User = get_user_model()
 
@@ -34,14 +36,13 @@ class Deck(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            original_name = self.name
+            original_name = defaultfilters.slugify(unidecode(self.name))
             base_name = original_name
             counter = 1
             while Deck.objects.filter(user=self.user, name__iexact=base_name).exists():
-                base_name = f"{original_name} {counter}"
+                base_name = f"{original_name}-{counter}"
                 counter +=1
-            self.name = base_name
-            self.slug = slugify(base_name)
+            self.slug = base_name
         super().save(*args, **kwargs)
 
 class Card(models.Model):
@@ -75,7 +76,7 @@ class Card(models.Model):
             self.hint = "".join(hint)
 
         if not self.slug:
-            base_slug = slugify(self.front)
+            base_slug = defaultfilters.slugify(unidecode(self.front))
             slug = base_slug
             counter = 1
 
@@ -108,7 +109,7 @@ class CardProgress(models.Model):
     last_review = models.DateField(blank=True, null=True)
 
     def update_after_review(self, quality):
-        self.last_reviewed = timezone.now()
+        self.last_review = timezone.now().date()
 
         if quality < 3:
             self.repetitions = 0
