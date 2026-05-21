@@ -1,23 +1,28 @@
 from django.utils import timezone
 from datetime import timedelta
 from .models import UserStreak
+from django.db import transaction
+from django.db.models import F
+
 
 def update_streak(user):
-    streak, created = UserStreak.objects.get_or_create(user=user)
     today = timezone.now().date()
-    last_visit_date = streak.last_visit_date.date() if streak.last_visit_date else None
 
-    if last_visit_date == today:
-        return
+    with transaction.atomic():
+        streak, created = UserStreak.objects.select_for_update().get_or_create(user=user)
+        last_visit_date = streak.last_visit_date.date() if streak.last_visit_date else None
 
-    if last_visit_date == today - timedelta(days=1):
-        streak.current_streak += 1
+        if last_visit_date == today:
+            return
 
-    if last_visit_date < today - timedelta(days=1):
-        streak.current_streak = 1
+        if last_visit_date == today - timedelta(days=1):
+            streak.current_streak = F('current_streak') + 1
 
-    if streak.current_streak > streak.max_streak:
-        streak.max_streak = streak.current_streak
+        if last_visit_date < today - timedelta(days=1):
+            streak.current_streak = 1
 
-    streak.last_visit_date = timezone.now()
-    streak.save()
+        if streak.current_streak > streak.max_streak:
+            streak.max_streak = streak.current_streak
+
+        streak.last_visit_date = timezone.now()
+        streak.save(update_fields=['current_streak', 'last_visit_date', 'max_streak'])
