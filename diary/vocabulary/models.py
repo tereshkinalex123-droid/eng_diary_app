@@ -69,8 +69,8 @@ class Card(models.Model):
 
     def save(self, *args, **kwargs):
 
-        if not self.hint and len(self.front) > 3:
-            hint = list(self.front)
+        if not self.hint and len(self.back) > 3:
+            hint = list(self.back)
             for i in range(1, len(hint) - 1):
                 hint[i] = "_"
             self.hint = "".join(hint)

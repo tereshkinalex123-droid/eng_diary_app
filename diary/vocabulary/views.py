@@ -5,10 +5,8 @@ from django.shortcuts import redirect
 from .forms import DeckForm, CardForm, ReviewSessionForm
 from django.utils import timezone
 from .services.logic import get_review_cards
-from django.http import JsonResponse
-import json
 import traceback
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from django.urls import reverse
 
 @login_required
