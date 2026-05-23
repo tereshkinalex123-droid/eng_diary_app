@@ -19,10 +19,10 @@ from records.models import Record, Tag
 from vocabulary.models import Deck, Card, CardProgress
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton, ReplyKeyboardMarkup
 from django.utils import timezone
+from image_gen import generate_card_image
+from config import BOT_TOKEN
 
-TOKEN = "8765444672:AAEjNIXbOrExePt_I6HuotvVD-b74USQNtw"
-
-bot = Bot(token=TOKEN)
+bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
 
@@ -318,9 +318,11 @@ async def show_card(message: types.Message, state: FSMContext):
 
     card_dict = cards[current_card]
     front = card_dict["front"]
+    photo = generate_card_image(front)
 
-    msg = await message.answer(
-        f"{current_card + 1}/{limit}\n{front}",
+    msg = await message.answer_photo(
+        photo=photo,
+        caption=f"Card: {current_card + 1}/{limit}",
         reply_markup=keyboard_front_card()
     )
     await store_message_id(state, msg)
@@ -357,7 +359,12 @@ async def process_front_answer(message: types.Message, state: FSMContext):
         await store_message_id(state, msg)
         await state.set_state(ReviewCard.waiting_for_front_answer)
     elif answer == "show back":
-        msg = await message.answer(back, reply_markup=keyboard_answer_card())
+        photo = generate_card_image(back, bg_color=(34, 139, 34))
+        msg = await message.answer_photo(
+            photo=photo,
+            caption="How well did you remember this?",
+            reply_markup=keyboard_answer_card()
+        )
         await store_message_id(state, msg)
         await state.set_state(ReviewCard.waiting_for_card_answer)
 
