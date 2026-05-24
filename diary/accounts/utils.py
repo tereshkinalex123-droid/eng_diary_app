@@ -4,7 +4,6 @@ from .models import UserStreak
 from django.db import transaction
 from django.db.models import F
 
-
 def update_streak(user):
     today = timezone.now().date()
 
@@ -15,13 +14,12 @@ def update_streak(user):
         if last_visit_date == today:
             return
 
-        if last_visit_date == today - timedelta(days=1):
-            UserStreak.objects.filter(user=user).update(current_streak=F('current_streak') + 1)
-        elif last_visit_date < today - timedelta(days=1):
-            UserStreak.objects.filter(user=user).update(current_streak=1)
+        streak.is_active_today = True
+
+        UserStreak.objects.filter(user=user).update(current_streak=F('current_streak') + 1)
 
         if streak.current_streak > streak.max_streak:
             streak.max_streak = streak.current_streak
 
-        streak.last_visit_date = timezone.now()
+        streak.last_visit_date = timezone.now().date()
         streak.save(update_fields=['current_streak', 'last_visit_date', 'max_streak'])
