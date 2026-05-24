@@ -173,3 +173,15 @@ body {
 .back-link:hover {
     color: #667eea;
 }
+
+.streak-card.active,
+.streak-badge.active {
+    background: linear-gradient(135deg, #f59e0b, #ea580c);
+    color: white;
+}
+
+.streak-card.inactive,
+.streak-badge.inactive {
+    background: #6b7280;
+    color: #9ca3af;
+}

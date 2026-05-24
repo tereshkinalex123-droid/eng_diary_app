@@ -23,7 +23,7 @@
 
         <!-- Секция Стрика -->
         <div class="streak-section">
-            <div class="streak-card">
+            <div class="streak-card {% if streak.is_active_today %}active{% else %}inactive{% endif %}">
                 <div class="streak-icon">🔥</div>
                 <div class="streak-value">{{ streak.current_streak|default:0 }}</div>
                 <div class="streak-label">текущий стрик</div>

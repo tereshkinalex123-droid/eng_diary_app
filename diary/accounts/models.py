@@ -8,6 +8,7 @@ class UserStreak(models.Model):
     last_visit_date = models.DateTimeField(auto_now_add=True)
     current_streak = models.IntegerField(default=0)
     max_streak = models.IntegerField(default=0)
+    is_active_today = models.BooleanField(default=False)
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')

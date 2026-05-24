@@ -16,20 +16,20 @@
                 <h1 class="app-title">✨ LinguaFlow ✨</h1>
             </div>
             <div class="profile-card">
-                    <div class="profile-wrapper">
-                        <div class="avatar">{{ user.username|make_list|first }}{{ user.username|make_list|last }}</div>
-                        <div class="user-info">
-                            <a href="{% url 'accounts:profile' %}"  class="user-name">{{ user.username }}</a>
-                            <div class="streak-badge">
-                                <span>🔥</span>
-                                <span>{{ user.streak.current_streak|default:0 }}</span>
-                            </div>
+                <div class="profile-wrapper">
+                    <div class="avatar">{{ user.username|make_list|first }}{{ user.username|make_list|last }}</div>
+                    <div class="user-info">
+                        <a href="{% url 'accounts:profile' %}" class="user-name">{{ user.username }}</a>
+                        <div class="streak-badge {% if user.streak.is_active_today %}active{% else %}inactive{% endif %}">
+                            <span>🔥</span>
+                            <span>{{ user.streak.current_streak|default:0 }}</span>
                         </div>
                     </div>
-                    <form method="post" action="{% url 'logout' %}">
-                        {% csrf_token %}
-                        <button type="submit">Выйти</button>
-                    </form>
+                </div>
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit">Выйти</button>
+                </form>
             </div>
         </div>
 
