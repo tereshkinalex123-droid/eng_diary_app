@@ -16,10 +16,9 @@ def update_streak(user):
             return
 
         if last_visit_date == today - timedelta(days=1):
-            streak.current_streak = F('current_streak') + 1
-
-        if last_visit_date < today - timedelta(days=1):
-            streak.current_streak = 1
+            UserStreak.objects.filter(user=user).update(current_streak=F('current_streak') + 1)
+        elif last_visit_date < today - timedelta(days=1):
+            UserStreak.objects.filter(user=user).update(current_streak=1)
 
         if streak.current_streak > streak.max_streak:
             streak.max_streak = streak.current_streak
