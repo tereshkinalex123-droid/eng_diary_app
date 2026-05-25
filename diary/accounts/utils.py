@@ -11,10 +11,11 @@ def update_streak(user):
         streak, created = UserStreak.objects.select_for_update().get_or_create(user=user)
         last_visit_date = streak.last_visit_date.date() if streak.last_visit_date else None
 
+        streak.is_active_today = True
+        streak.save()
+
         if last_visit_date == today:
             return
-
-        streak.is_active_today = True
 
         UserStreak.objects.filter(user=user).update(current_streak=F('current_streak') + 1)
 

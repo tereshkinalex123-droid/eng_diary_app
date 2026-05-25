@@ -174,14 +174,14 @@ body {
     color: #667eea;
 }
 
-.streak-card.active,
-.streak-badge.active {
-    background: linear-gradient(135deg, #f59e0b, #ea580c);
-    color: white;
+.streak-card svg{
+    height:45px;
 }
 
-.streak-card.inactive,
-.streak-badge.inactive {
-    background: #6b7280;
-    color: #9ca3af;
+.streak-card.active svg{
+    fill: #f97013;
+}
+
+.streak-card.inactive svg{
+    fill: #6b7280;
 }
