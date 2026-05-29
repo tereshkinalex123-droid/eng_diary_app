@@ -105,7 +105,7 @@ class CardProgress(models.Model):
     repetitions  = models.IntegerField(default=0)
     interval  = models.PositiveIntegerField(default=0)
 
-    next_review = models.DateField(default=timezone.now().date())
+    next_review = models.DateField(default=timezone.now().date)
     last_review = models.DateField(blank=True, null=True)
 
     def update_after_review(self, quality):

@@ -144,7 +144,10 @@ def create_tag(request):
     if not name:
         return JsonResponse({'error': 'Empty name'}, status=400)
 
-    tag, created = Tag.objects.get_or_create(name=name)
+    tag, created = Tag.objects.get_or_create(
+        name=name,
+        user=request.user
+    )
 
     return JsonResponse({
         "id": tag.id,
@@ -164,7 +167,8 @@ def attach_tag(request):
     )
     tag = get_object_or_404(
         Tag,
-        id=tag_id
+        id=tag_id,
+        user=request.user
     )
 
     record.tags.add(tag)

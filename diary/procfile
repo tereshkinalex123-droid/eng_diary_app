@@ -1,0 +1,3 @@
+web: gunicorn diary.wsgi
+worker: celery -A diary worker --loglevel=info --pool=solo
+beat: celery -A diary beat --loglevel=info
