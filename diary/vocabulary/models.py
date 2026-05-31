@@ -36,7 +36,7 @@ class Deck(models.Model):
 
     def save(self, *args, **kwargs):
         if not self.pk:
-            original_name = defaultfilters.slugify(unidecode(self.name))
+            original_name = slugify(unidecode(self.name))
             base_name = original_name
             counter = 1
             while Deck.objects.filter(user=self.user, name__iexact=base_name).exists():
@@ -76,7 +76,7 @@ class Card(models.Model):
             self.hint = "".join(hint)
 
         if not self.slug:
-            base_slug = defaultfilters.slugify(unidecode(self.front))
+            base_slug = slugify(unidecode(self.front))
             slug = base_slug
             counter = 1
 
@@ -105,7 +105,7 @@ class CardProgress(models.Model):
     repetitions  = models.IntegerField(default=0)
     interval  = models.PositiveIntegerField(default=0)
 
-    next_review = models.DateField(default=timezone.now().date)
+    next_review = models.DateField(auto_now_add=True)
     last_review = models.DateField(blank=True, null=True)
 
     def update_after_review(self, quality):

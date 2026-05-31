@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.text import slugify
 from django.utils import timezone
 from django.contrib.auth import get_user_model
+from unidecode import unidecode
 
 User = get_user_model()
 
@@ -37,7 +38,8 @@ class Record(models.Model):
     def save(self, *args, **kwargs):
         if not self.slug:
             date = self.date or timezone.now()
-            slug = slugify(f"{self.title}-{date.strftime('%Y%m%d')}")
+            title_slug = slugify(unidecode(self.title))
+            slug = f"{title_slug}-{date.strftime('%Y%m%d')}"
             counter = 1
             while Record.objects.filter(slug=slug,user=self.user).exists():
                 slug = f"{slug}-{counter}"
