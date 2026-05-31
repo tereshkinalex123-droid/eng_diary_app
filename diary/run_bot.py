@@ -20,8 +20,8 @@ from vocabulary.models import Deck, Card, CardProgress
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, KeyboardButton, ReplyKeyboardMarkup
 from django.utils import timezone
 from image_gen import generate_card_image
-from config import BOT_TOKEN
 
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
 
